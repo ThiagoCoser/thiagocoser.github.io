@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>W3.CSS Template</title>
+    <title>Thiago Cóser</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/5/w3.css">
@@ -39,38 +39,70 @@
             <a href="index.html" class="w3-bar-item w3-button w3-padding-large ">Home</a>
             <a href="bio.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small ">Bio</a>
             <a href="arte.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">Arte</a>
-            <a href="jogos.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small ">Jogos</a>
+
+            <!--
+			<div class="w3-dropdown-hover w3-hide-small ">
+				<button class="w3-padding-large w3-button " title="Jogos">Jogos <i
+						class="fa fa-caret-down"></i></button>
+				<div class="w3-dropdown-content w3-bar-block w3-card-4">
+					<a href="Tarules.html" class="w3-bar-item w3-button">Tarules</a>
+
+				</div>
+			</div>
+
+		-->
+
+            <a href="jogos.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">Jogos</a>
+
+
             <a href="pesquisa.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small ">Pesquisa</a>
 
 
 
 
+
+            <a href="comerciais.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small ">Projetos
+                Comerciais</a>
             <a href="contato.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small ">Contato</a>
-            <div class="w3-dropdown-hover w3-hide-small ">
-                <button class="w3-padding-large w3-button " title="More">Mais <i class="fa fa-caret-down"></i></button>
-                <div class="w3-dropdown-content w3-bar-block w3-card-4">
-                    <a href="comerciais.html" class="w3-bar-item w3-button">Projetos comerciais</a>
+
+            <!--
+			<div class="w3-dropdown-hover w3-hide-small ">
 
 
+				<button class="w3-padding-large w3-button " title="More">Mais <i class="fa fa-caret-down"></i></button>
 
-                </div>
-            </div>
+				<div class="w3-dropdown-content w3-bar-block w3-card-4">
+					<a href="comerciais.html" class="w3-bar-item w3-button">Projetos comerciais</a>
+
+				</div>
+			</div>
+		-->
 
         </div>
     </div>
 
     <!-- Navbar on small screens (remove the onclick attribute if you want the navbar to always show on top of the content when clicking on the links) -->
     <div id="navDemo" class="w3-bar-block w3-black w3-hide w3-hide-large w3-hide-medium w3-top" style="margin-top:46px">
-        <a href="#band" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">BAND</a>
-        <a href="#tour" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">TOUR</a>
-        <a href="#contact" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">CONTACT</a>
-        <a href="#" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">MERCH</a>
+        <a href="index.html" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">Home</a>
+        <a href="bio.htmlr" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">Bio</a>
+        <a href="arte.html" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">Arte</a>
+        <a href="jogos.html" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">Jogos</a>
+        <a href="pesquisa.html" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">Pesquisa</a>
+        <a href="projetos.html" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">Projetos
+            comerciais</a>
+        <a href="contato.html" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">Contato</a>
     </div>
 
     <!-- Page content -->
     <div class="w3-content" style="max-width:2000px;margin-top:46px">
 
+        <!-- Automatic Slideshow Images -->
+        <div class="mySlides w3-display-container w3-center">
+            <img src="" style="width:100%">
+            <div class="w3-display-bottommiddle w3-container w3-text-white w3-padding-32 ">
 
+            </div>
+        </div>
 
         <!--
         <div class="mySlides w3-display-container w3-center">
@@ -115,15 +147,15 @@
 
 
 
+
         <!-- End Page Content -->
     </div>
 
 
 
-    <!-- Footer fixo no fundo da tela -->
-    <footer class="w3-container w3-center"
-        style="background-color:black; padding:16px 0; position:fixed; bottom:0; width:100%;">
-        <p class="w3-medium w3-text-white" style="margin: 0;">2025</p>
+    <!-- Footer -->
+    <footer class="w3-container w3-padding-16 w3-center w3-xlarge" style="background-color:black">
+        <p class="w3-medium w3-text-white">2025</p>
     </footer>
 
     <script>
@@ -161,6 +193,60 @@
             }
         }
     </script>
+
+</body>
+
+</html>
+
+
+
+
+<!-- End Page Content -->
+</div>
+
+
+
+<!-- Footer fixo no fundo da tela -->
+<footer class="w3-container w3-center"
+    style="background-color:black; padding:16px 0; position:fixed; bottom:0; width:100%;">
+    <p class="w3-medium w3-text-white" style="margin: 0;">2025</p>
+</footer>
+
+<script>
+    // Automatic Slideshow - change image every 4 seconds
+    var myIndex = 0;
+    carousel();
+
+    function carousel() {
+        var i;
+        var x = document.getElementsByClassName("mySlides");
+        for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none";
+        }
+        myIndex++;
+        if (myIndex > x.length) { myIndex = 1 }
+        x[myIndex - 1].style.display = "block";
+        setTimeout(carousel, 4000);
+    }
+
+    // Used to toggle the menu on small screens when clicking on the menu button
+    function myFunction() {
+        var x = document.getElementById("navDemo");
+        if (x.className.indexOf("w3-show") == -1) {
+            x.className += " w3-show";
+        } else {
+            x.className = x.className.replace(" w3-show", "");
+        }
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    var modal = document.getElementById('ticketModal');
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>
 
 </body>
 
