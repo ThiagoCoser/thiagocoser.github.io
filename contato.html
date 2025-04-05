@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>W3.CSS Template</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/5/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        body {
+            font-family: "Lato", sans-serif
+        }
+
+        .mySlides {
+            display: none
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <div class="w3-top">
+        <div class="w3-bar w3-black w3-card"
+            style="display: flex; justify-content: space-between; align-items: center;">
+
+            <!-- Texto fixo à esquerda -->
+            <span class="w3-bar-item" style="color:white;">Texto à esquerda</span>
+
+            <!-- Container dos botões de navegação alinhado à direita -->
+            <div style="display: flex; align-items: center;">
+                <a href="index.html" class="w3-bar-item w3-button w3-padding-large">HOME</a>
+                <a href="bio.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">BIO</a>
+                <a href="arte.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">ARTE</a>
+                <a href="jogos.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">JOGOS</a>
+                <a href="pesquisa.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">PESQUISA</a>
+                <a href="contato.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">CONTATO</a>
+
+                <!-- Dropdown -->
+                <div class="w3-dropdown-hover w3-hide-small">
+                    <button class="w3-padding-large w3-button" title="More">MAIS <i
+                            class="fa fa-caret-down"></i></button>
+                    <div class="w3-dropdown-content w3-bar-block w3-card-4">
+                        <a href="comerciais.html" class="w3-bar-item w3-button">PROJETOS COMERCIAIS</a>
+                    </div>
+                </div>
+
+                <!-- Botão mobile hambúrguer -->
+                <a class="w3-bar-item w3-button w3-padding-large w3-hide-medium w3-hide-large" href="javascript:void(0)"
+                    onclick="myFunction()" title="Toggle Navigation Menu">
+                    <i class="fa fa-bars"></i>
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+
+    <!-- The Contact Section -->
+    <div class="w3-container w3-content w3-padding-64" style="max-width:800px" id="contact">
+        <p></p>
+        <p></p>
+        <h2 class="w3-wide w3-center">CONTATO</h2>
+
+        <div class="w3-row w3-padding-32">
+            <div class="w3-col m6 w3-large w3-margin-bottom">
+                <i class="" style="width:30px"></i> Thiago Cóser<br>
+                <p></p>
+                <i class="fa fa-map-marker" style="width:30px"></i> São Paulo, Brasil<br>
+                <i class="fa fa-phone" style="width:30px"></i> +55 11 99648-3463<br>
+                <i class="fa fa-envelope" style="width:30px"> </i> Email: thiago.coser@gmail.com<br>
+            </div>
+
+
+
+
+            <script>
+                // Automatic Slideshow - change image every 4 seconds
+                var myIndex = 0;
+                carousel();
+
+                function carousel() {
+                    var i;
+                    var x = document.getElementsByClassName("mySlides");
+                    for (i = 0; i < x.length; i++) {
+                        x[i].style.display = "none";
+                    }
+                    myIndex++;
+                    if (myIndex > x.length) { myIndex = 1 }
+                    x[myIndex - 1].style.display = "block";
+                    setTimeout(carousel, 4000);
+                }
+
+                // Used to toggle the menu on small screens when clicking on the menu button
+                function myFunction() {
+                    var x = document.getElementById("navDemo");
+                    if (x.className.indexOf("w3-show") == -1) {
+                        x.className += " w3-show";
+                    } else {
+                        x.className = x.className.replace(" w3-show", "");
+                    }
+                }
+
+                // When the user clicks anywhere outside of the modal, close it
+                var modal = document.getElementById('ticketModal');
+                window.onclick = function (event) {
+                    if (event.target == modal) {
+                        modal.style.display = "none";
+                    }
+                }
+            </script>
+
+</body>
+
+</html>
