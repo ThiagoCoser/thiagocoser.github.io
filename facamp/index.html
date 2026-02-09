@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>Thiago Cóser</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/5/w3.css">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<style>
+		body {
+			font-family: "Lato", sans-serif
+		}
+
+		.mySlides {
+			display: none
+		}
+	</style>
+</head>
+
+<body>
+
+	<!-- Navbar -->
+	<div class="w3-top">
+		<div class="w3-bar w3-black w3-card">
+
+			<!-- Menu hamburguer visível só em telas pequenas -->
+			<a class="w3-bar-item w3-button w3-padding-large w3-hide-medium w3-hide-large w3-right"
+				href="javascript:void(0)" onclick="myFunction()" title="Toggle Navigation Menu">
+				<i class="fa fa-bars"></i>
+			</a>
+
+			<!-- Esse sempre visível -->
+			<span class="w3-bar-item w3-padding-large" style="cursor: default;">Thiago Cóser</span>
+
+			<!-- Esses escondem em telas pequenas -->
+			<a href="index.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">Home</a>
+			<a href="bio.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">Bio</a>
+			<a href="arte.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">Arte</a>
+			<a href="jogos.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">Jogos</a>
+			<a href="pesquisa.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">Pesquisa</a>
+			<a href="projetos.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">Projetos
+			</a>
+			<a href="contato.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">Contato</a>
+
+		</div>
+	</div>
+
+	<!--
+			<div class="w3-dropdown-hover w3-hide-small ">
+
+
+				<button class="w3-padding-large w3-button " title="More">Mais <i class="fa fa-caret-down"></i></button>
+
+				<div class="w3-dropdown-content w3-bar-block w3-card-4">
+					<a href="comerciais.html" class="w3-bar-item w3-button">Projetos comerciais</a>
+
+				</div>
+			</div>
+		-->
+
+	</div>
+	</div>
+
+	<!-- Navbar on small screens (remove the onclick attribute if you want the navbar to always show on top of the content when clicking on the links) -->
+	<div id="navDemo" class="w3-bar-block w3-black w3-hide w3-hide-large w3-hide-medium w3-top" style="margin-top:46px">
+		<a href="index.html" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">Home</a>
+		<a href="bio.html" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">Bio</a>
+		<a href="arte.html" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">Arte</a>
+		<a href="jogos.html" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">Jogos</a>
+		<a href="pesquisa.html" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">Pesquisa</a>
+		<a href="projetos.html" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">Projetos
+		</a>
+		<a href="contato.html" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">Contato</a>
+	</div>
+
+	<!-- Page content -->
+	<div class="w3-content" style="max-width:2000px;margin-top:46px">
+
+		<!-- Automatic Slideshow Images -->
+		<div class="mySlides w3-display-container w3-center">
+			<img src="images/forestDay.jpg" style="width:100%">
+			<div class="w3-display-bottommiddle w3-container w3-text-white w3-padding-32 ">
+
+			</div>
+		</div>
+
+		<div class="mySlides w3-display-container w3-center">
+			<img src="images/forestNight.jpg" style="width:100%">
+			<div class="w3-display-bottommiddle w3-container w3-text-white w3-padding-32 ">
+
+			</div>
+		</div>
+
+
+		<!--
+        <div class="mySlides w3-display-container w3-center">
+            <img src="/images/forestDay.jpg" style="width:100%">
+            <div class="w3-display-bottommiddle w3-container w3-text-white w3-padding-32 w3-hide-small">
+                <h3>New York</h3>
+                <p><b>The atmosphere in New York is lorem ipsum.</b></p>
+            </div>
+        </div>
+        <div class="mySlides w3-display-container w3-center">
+            <img src="/images/forestDay.jpg" style="width:100%">
+            <div class="w3-display-bottommiddle w3-container w3-text-white w3-padding-32 w3-hide-small">
+                <h3>Chicago</h3>
+                <p><b>Thank you, Chicago - A night we won't forget.</b></p>
+            </div>
+        </div>
+-->
+		<!-- The Band Section -->
+		<div class="w3-container w3-content w3-center w3-padding-64" style="max-width:800px" id="band">
+			<h2 class="w3-wide">DESAPARECIMENTO</h2>
+			<p class="w3-opacity" style="font-size:20px;"><i>Uma floresta virtual</i></p>
+			<p class="w3-justify" style="font-size:20px;">
+
+
+				A instalação mostra o desaparecimento da flora de uma floresta ambígua: nativa,
+				domesticada, alienígena e
+				virtual. Utilizando um sensor de movimento, assim que a floresta percebe a presença humana, tem
+				tempo real, ela começa a
+				desaparecer. A
+				flora apenas se recompõe lentamente quando não há detecção de movimento, ou seja, sua plenitude só
+				existe sem
+				observadores humanos.
+
+
+
+
+			</p>
+
+
+			<div class="w3-container w3-center" style="margin-top:32px;">
+				<a href="arte.html" class="w3-button w3-black w3-round-large w3-large">Saiba mais</a>
+			</div>
+
+		</div>
+
+
+
+		<!-- End Page Content -->
+	</div>
+
+
+
+	<!-- Footer -->
+	<footer class="w3-container w3-padding-16 w3-center w3-xlarge" style="background-color:black">
+		<p class="w3-medium w3-text-white">2025</p>
+	</footer>
+
+	<script>
+		// Automatic Slideshow - change image every 4 seconds
+		var myIndex = 0;
+		carousel();
+
+		function carousel() {
+			var i;
+			var x = document.getElementsByClassName("mySlides");
+			for (i = 0; i < x.length; i++) {
+				x[i].style.display = "none";
+			}
+			myIndex++;
+			if (myIndex > x.length) { myIndex = 1 }
+			x[myIndex - 1].style.display = "block";
+			setTimeout(carousel, 4000);
+		}
+
+		// Used to toggle the menu on small screens when clicking on the menu button
+		function myFunction() {
+			var x = document.getElementById("navDemo");
+			if (x.className.indexOf("w3-show") == -1) {
+				x.className += " w3-show";
+			} else {
+				x.className = x.className.replace(" w3-show", "");
+			}
+		}
+
+		// When the user clicks anywhere outside of the modal, close it
+		var modal = document.getElementById('ticketModal');
+		window.onclick = function (event) {
+			if (event.target == modal) {
+				modal.style.display = "none";
+			}
+		}
+	</script>
+
+</body>
+
+</html>
