@@ -6,7 +6,7 @@
   <meta name="description" content="Visualize a obra em realidade aumentada — Beyond the Surface, FAMUN 2026">
   <title>AR Viewer | Beyond the Surface</title>
   <link rel="stylesheet" href="style.css">
-  <!-- model-viewer for 3D rendering -->
+  <!-- model-viewer for 3D rendering and AR -->
   <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
   <style>
     model-viewer {
@@ -51,15 +51,24 @@
       border: 1px solid rgba(212, 168, 83, 0.25);
       margin-bottom: 8px;
     }
-    .note-fbx {
-      margin-top: 12px;
-      padding: 12px 16px;
+    .ar-btn-overlay {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
       border-radius: var(--radius-sm);
-      background: rgba(74, 124, 255, 0.08);
-      border: 1px solid rgba(74, 124, 255, 0.2);
-      color: var(--accent-blue-light);
-      font-size: 0.8rem;
-      line-height: 1.5;
+      background: var(--gradient-gold);
+      border: none;
+      color: #0a0a12;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      position: absolute;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      box-shadow: 0 8px 24px rgba(212, 168, 83, 0.3);
+      z-index: 10;
     }
   </style>
 </head>
@@ -78,33 +87,30 @@
       <p id="arArtist"></p>
     </div>
 
-    <div class="ar-viewer-wrapper" id="viewerWrapper">
+    <div class="ar-viewer-wrapper" id="viewerWrapper" style="position: relative;">
       <model-viewer
         id="modelViewer"
         src=""
         alt="Modelo 3D da obra"
-        auto-rotate
+        ar
+        ar-modes="webxr scene-viewer quick-look"
         camera-controls
+        auto-rotate
         shadow-intensity="1"
         environment-image="neutral"
         exposure="1"
         style="width:100%; height:100%; background: #12121f;"
-      ></model-viewer>
-    </div>
-
-    <div class="note-fbx" id="noteFbx" style="max-width:600px; width:100%; display:none;">
-      ⚠️ O modelo está em formato FBX. O visualizador web suporta nativamente formatos GLB/GLTF.
-      Para uma experiência completa, converta os modelos para GLB. Enquanto isso, a pré-visualização pode estar indisponível.
+      >
+        <button slot="ar-button" class="ar-btn-overlay">
+          📸 Ativar Câmera AR
+        </button>
+      </model-viewer>
     </div>
 
     <div class="ar-info-card" id="arInfoCard" style="display:none;">
       <span class="tag" id="arTag"></span>
       <h3 id="arCardTitle"></h3>
       <p id="arCardDesc"></p>
-    </div>
-
-    <div class="ar-found-msg" id="foundMsg" style="display:none;">
-      ✅ Obra marcada como encontrada! Volte à galeria para ver seu progresso.
     </div>
 
     <a class="ar-back" href="index.html" id="backBtn">
@@ -118,21 +124,21 @@
         title: 'Sphere Within Sphere',
         artist: 'Arnaldo Pomodoro',
         meta: 'Itália, 1996',
-        model: 'Assets/A.fbx',
+        model: 'Assets/A.glb',
         description: 'Uma esfera dourada dentro de outra esfera, símbolo da fragilidade da ordem mundial.'
       },
       B: {
         title: 'Non Violence',
         artist: 'Carl Fredrik Reuterswärd',
         meta: 'Luxemburgo (em nome da Suécia), 1988',
-        model: 'Assets/B.fbx',
+        model: 'Assets/B.glb',
         description: 'Um revólver com o cano amarrado em nó — símbolo universal do desarmamento.'
       },
       C: {
         title: 'Busto de Mahatma Gandhi',
         artist: 'Ram Sutar',
         meta: 'Índia, 2022',
-        model: 'Assets/C.fbx',
+        model: 'Assets/C.glb',
         description: 'Primeira escultura de Gandhi na sede da ONU, homenagem à resistência não violenta.'
       }
     };
@@ -160,42 +166,9 @@
       document.getElementById('arCardTitle').textContent = obra.title;
       document.getElementById('arCardDesc').textContent = obra.description;
 
-      // Set model source
+      // Set model source (GLB format)
       const viewer = document.getElementById('modelViewer');
-      // model-viewer supports GLB/GLTF natively. FBX requires conversion.
-      // We set the source anyway and show a note about FBX format.
       viewer.setAttribute('src', obra.model);
-      document.getElementById('noteFbx').style.display = 'block';
-
-      // Check for GLB version (preferred)
-      const glbPath = obra.model.replace('.fbx', '.glb');
-      fetch(glbPath, { method: 'HEAD' })
-        .then(res => {
-          if (res.ok) {
-            viewer.setAttribute('src', glbPath);
-            document.getElementById('noteFbx').style.display = 'none';
-          }
-        })
-        .catch(() => {});
-
-      // Mark as found
-      markAsFound(obraId);
-    }
-
-    function markAsFound(obraId) {
-      const key = 'obras_found';
-      let found = JSON.parse(localStorage.getItem(key) || '{}');
-
-      if (!found[obraId]) {
-        found[obraId] = { timestamp: new Date().toISOString() };
-        localStorage.setItem(key, JSON.stringify(found));
-        document.getElementById('foundMsg').style.display = 'block';
-      } else {
-        // Already found, show different message
-        const msg = document.getElementById('foundMsg');
-        msg.textContent = '✅ Você já encontrou esta obra!';
-        msg.style.display = 'block';
-      }
     }
 
     init();

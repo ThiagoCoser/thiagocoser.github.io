@@ -82,12 +82,12 @@
           convida os jovens a enxergar além das aparências e agir para reparar as fissuras do mundo.
         </p>
         <div class="obra-actions">
-          <button class="btn-scan btn-primary" onclick="showQR('A')" id="btn-qr-A">
-            📱 Ver QR Code
+          <button class="btn-scan btn-primary" onclick="openScanner('A', 'register')" id="btn-register-A">
+            📷 Registrar Obra
           </button>
-          <a class="btn-scan btn-secondary" href="ar.html?obra=A" id="btn-ar-A">
+          <button class="btn-scan btn-secondary" onclick="openScanner('A', 'ar')" id="btn-ar-A">
             🔮 Ver em 3D
-          </a>
+          </button>
         </div>
       </div>
     </article>
@@ -114,12 +114,12 @@
           transformada em arte, e que a paz é uma escolha ativa.
         </p>
         <div class="obra-actions">
-          <button class="btn-scan btn-primary" onclick="showQR('B')" id="btn-qr-B">
-            📱 Ver QR Code
+          <button class="btn-scan btn-primary" onclick="openScanner('B', 'register')" id="btn-register-B">
+            📷 Registrar Obra
           </button>
-          <a class="btn-scan btn-secondary" href="ar.html?obra=B" id="btn-ar-B">
+          <button class="btn-scan btn-secondary" onclick="openScanner('B', 'ar')" id="btn-ar-B">
             🔮 Ver em 3D
-          </a>
+          </button>
         </div>
       </div>
     </article>
@@ -146,12 +146,12 @@
           resistência pacífica pode ser mais poderosa do que qualquer arma.
         </p>
         <div class="obra-actions">
-          <button class="btn-scan btn-primary" onclick="showQR('C')" id="btn-qr-C">
-            📱 Ver QR Code
+          <button class="btn-scan btn-primary" onclick="openScanner('C', 'register')" id="btn-register-C">
+            📷 Registrar Obra
           </button>
-          <a class="btn-scan btn-secondary" href="ar.html?obra=C" id="btn-ar-C">
+          <button class="btn-scan btn-secondary" onclick="openScanner('C', 'ar')" id="btn-ar-C">
             🔮 Ver em 3D
-          </a>
+          </button>
         </div>
       </div>
     </article>
@@ -162,19 +162,29 @@
     <p>Beyond the Surface © FAMUN 2026 — Explore. Descubra. Transforme.</p>
   </footer>
 
-  <!-- QR Modal -->
-  <div class="modal-overlay" id="qrModal">
-    <div class="modal-content">
-      <h3 id="modalTitle">QR Code</h3>
-      <p id="modalSubtitle">Escaneie para ver em realidade aumentada</p>
-      <div class="modal-qr" id="modalQRContainer"></div>
-      <p style="font-size: 0.75rem; color: #6a6a85; margin-bottom: 16px;" id="modalURL"></p>
-      <button class="modal-close" onclick="closeModal()">Fechar</button>
+  <!-- Scanner Modal -->
+  <div class="modal-overlay" id="scannerModal">
+    <div class="modal-content scanner-modal-content">
+      <div class="scanner-header">
+        <h3 id="scannerTitle">Registrar Obra</h3>
+        <p id="scannerSubtitle">Aponte a câmera para o QR Code da obra</p>
+      </div>
+      <div class="scanner-viewport" id="scannerViewport">
+        <div id="qr-reader"></div>
+      </div>
+      <div class="scanner-feedback" id="scannerFeedback"></div>
+      <button class="modal-close" onclick="closeScanner()">✕ Fechar Câmera</button>
     </div>
   </div>
 
-  <!-- QRCode.js for generating real, scannable QR codes -->
-  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+  <!-- Success Toast -->
+  <div class="toast" id="successToast">
+    <span class="toast-icon">✅</span>
+    <span class="toast-text" id="toastText">Obra registrada com sucesso!</span>
+  </div>
+
+  <!-- html5-qrcode scanner library -->
+  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
