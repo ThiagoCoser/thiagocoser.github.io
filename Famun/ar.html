@@ -94,7 +94,7 @@
   </div>
 
   <!-- Cena do MindAR. Desligamos a UI padrão dele (uiScanning: no) para usar a nossa -->
-  <a-scene mindar-image="imageTargetSrc: Assets/targets.mind; autoStart: true; uiScanning: no;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+  <a-scene mindar-image="imageTargetSrc: Assets/targets.mind; autoStart: true; uiScanning: no;" color-space="sRGB" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
     
     <a-assets>
       <a-asset-item id="modelA" src="Assets/A.glb"></a-asset-item>
@@ -104,20 +104,27 @@
 
     <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
+    <!-- Adicionando luzes para garantir que os modelos não fiquem escuros/invisíveis -->
+    <a-light type="ambient" color="#ffffff" intensity="1.5"></a-light>
+    <a-light type="directional" color="#ffffff" intensity="1.0" position="0 5 5"></a-light>
+
     <!-- targetIndex 0: Obra A (qr_A.png) -->
-    <!-- Rotação 90 0 0 normalmente faz o modelo ficar "em pé" em cima de um papel na mesa -->
     <a-entity mindar-image-target="targetIndex: 0" id="targetA">
-      <a-gltf-model src="#modelA" position="0 0 0" scale="0.2 0.2 0.2" rotation="90 0 0"></a-gltf-model>
+      <!-- Quadrado translúcido para teste: se aparecer o quadrado verde, o tracking funcionou -->
+      <a-plane position="0 0 0" scale="1 1 1" color="green" opacity="0.4"></a-plane>
+      <a-gltf-model src="#modelA" position="0 0 0.1" scale="1 1 1" rotation="90 0 0"></a-gltf-model>
     </a-entity>
 
     <!-- targetIndex 1: Obra B (qr_B.png) -->
     <a-entity mindar-image-target="targetIndex: 1" id="targetB">
-      <a-gltf-model src="#modelB" position="0 0 0" scale="0.2 0.2 0.2" rotation="90 0 0"></a-gltf-model>
+      <a-plane position="0 0 0" scale="1 1 1" color="blue" opacity="0.4"></a-plane>
+      <a-gltf-model src="#modelB" position="0 0 0.1" scale="1 1 1" rotation="90 0 0"></a-gltf-model>
     </a-entity>
 
     <!-- targetIndex 2: Obra C (qr_C.png) -->
     <a-entity mindar-image-target="targetIndex: 2" id="targetC">
-      <a-gltf-model src="#modelC" position="0 0 0" scale="0.2 0.2 0.2" rotation="90 0 0"></a-gltf-model>
+      <a-plane position="0 0 0" scale="1 1 1" color="red" opacity="0.4"></a-plane>
+      <a-gltf-model src="#modelC" position="0 0 0.1" scale="1 1 1" rotation="90 0 0"></a-gltf-model>
     </a-entity>
 
   </a-scene>
