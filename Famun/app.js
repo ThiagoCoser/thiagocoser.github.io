@@ -133,6 +133,19 @@ function openScanner(obraId, mode) {
 function startScanner(obraId) {
   const readerEl = document.getElementById('qr-reader');
   readerEl.innerHTML = '';
+  const feedback = document.getElementById('scannerFeedback');
+
+  // Check if we are in a secure context or localhost. getUserMedia requires this.
+  if (window.location.protocol === 'file:') {
+    feedback.innerHTML = '⚠️ Erro de Segurança: A câmera não funciona acessando o arquivo localmente (file://). Você precisa abrir este site através de um servidor local (ex: http://localhost:8000).';
+    feedback.className = 'scanner-feedback error';
+    return;
+  }
+  if (!window.isSecureContext) {
+    feedback.innerHTML = '⚠️ Erro de Segurança: A câmera requer HTTPS ou localhost. Se estiver no celular, conecte via um túnel seguro (HTTPS).';
+    feedback.className = 'scanner-feedback error';
+    return;
+  }
 
   html5QrCode = new Html5Qrcode('qr-reader');
 
@@ -142,18 +155,37 @@ function startScanner(obraId) {
     aspectRatio: 1.0
   };
 
-  html5QrCode.start(
-    { facingMode: 'environment' },
-    config,
-    (decodedText) => {
-      onQRCodeScanned(decodedText, obraId);
-    },
-    (errorMessage) => {
-      // Ignore scan errors (no QR in frame yet)
+  // Robust camera start: tries to get cameras first
+  Html5Qrcode.getCameras().then(devices => {
+    if (devices && devices.length) {
+      let cameraId = devices[0].id; // Default to first camera (usually webcam on PC)
+      // Try to find a back camera for mobile
+      for (let i = 0; i < devices.length; i++) {
+        if (devices[i].label.toLowerCase().includes('back') || devices[i].label.toLowerCase().includes('environment') || devices[i].label.toLowerCase().includes('traseira')) {
+          cameraId = devices[i].id;
+          break;
+        }
+      }
+
+      html5QrCode.start(
+        cameraId,
+        config,
+        (decodedText) => {
+          onQRCodeScanned(decodedText, obraId);
+        },
+        (errorMessage) => {
+          // Ignore scan errors (no QR in frame yet)
+        }
+      ).catch((err) => {
+        feedback.textContent = '⚠️ Erro ao iniciar câmera. Verifique as permissões do navegador.';
+        feedback.className = 'scanner-feedback error';
+      });
+    } else {
+      feedback.textContent = '⚠️ Nenhuma câmera encontrada no dispositivo.';
+      feedback.className = 'scanner-feedback error';
     }
-  ).catch((err) => {
-    const feedback = document.getElementById('scannerFeedback');
-    feedback.textContent = '⚠️ Não foi possível acessar a câmera. Verifique as permissões.';
+  }).catch(err => {
+    feedback.textContent = '⚠️ Permissão de câmera negada ou indisponível.';
     feedback.className = 'scanner-feedback error';
   });
 }
