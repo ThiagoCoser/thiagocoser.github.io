@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Visualize a obra em realidade aumentada — Beyond the Surface, FAMUN 2026">
+  <title>AR Viewer | Beyond the Surface</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- model-viewer for 3D rendering -->
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+  <style>
+    model-viewer {
+      width: 100%;
+      height: 100%;
+      --poster-color: transparent;
+    }
+    model-viewer::part(default-progress-bar) {
+      background: linear-gradient(135deg, #d4a853, #f0d090);
+    }
+    .ar-info-card {
+      position: relative;
+      z-index: 1;
+      max-width: 600px;
+      width: 100%;
+      background: var(--bg-card);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-md);
+      padding: 20px 24px;
+      backdrop-filter: blur(20px);
+      margin-top: 20px;
+    }
+    .ar-info-card h3 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.1rem;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+    .ar-info-card p {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+    .ar-info-card .tag {
+      display: inline-block;
+      padding: 3px 10px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      border-radius: 100px;
+      background: rgba(212, 168, 83, 0.15);
+      color: var(--accent-gold);
+      border: 1px solid rgba(212, 168, 83, 0.25);
+      margin-bottom: 8px;
+    }
+    .note-fbx {
+      margin-top: 12px;
+      padding: 12px 16px;
+      border-radius: var(--radius-sm);
+      background: rgba(74, 124, 255, 0.08);
+      border: 1px solid rgba(74, 124, 255, 0.2);
+      color: var(--accent-blue-light);
+      font-size: 0.8rem;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Animated Background -->
+  <div class="bg-animation">
+    <div class="orb"></div>
+    <div class="orb"></div>
+    <div class="orb"></div>
+  </div>
+
+  <div class="ar-container">
+    <div class="ar-header">
+      <h1 id="arTitle">Carregando...</h1>
+      <p id="arArtist"></p>
+    </div>
+
+    <div class="ar-viewer-wrapper" id="viewerWrapper">
+      <model-viewer
+        id="modelViewer"
+        src=""
+        alt="Modelo 3D da obra"
+        auto-rotate
+        camera-controls
+        shadow-intensity="1"
+        environment-image="neutral"
+        exposure="1"
+        style="width:100%; height:100%; background: #12121f;"
+      ></model-viewer>
+    </div>
+
+    <div class="note-fbx" id="noteFbx" style="max-width:600px; width:100%; display:none;">
+      ⚠️ O modelo está em formato FBX. O visualizador web suporta nativamente formatos GLB/GLTF.
+      Para uma experiência completa, converta os modelos para GLB. Enquanto isso, a pré-visualização pode estar indisponível.
+    </div>
+
+    <div class="ar-info-card" id="arInfoCard" style="display:none;">
+      <span class="tag" id="arTag"></span>
+      <h3 id="arCardTitle"></h3>
+      <p id="arCardDesc"></p>
+    </div>
+
+    <div class="ar-found-msg" id="foundMsg" style="display:none;">
+      ✅ Obra marcada como encontrada! Volte à galeria para ver seu progresso.
+    </div>
+
+    <a class="ar-back" href="index.html" id="backBtn">
+      ← Voltar à Galeria
+    </a>
+  </div>
+
+  <script>
+    const obras = {
+      A: {
+        title: 'Sphere Within Sphere',
+        artist: 'Arnaldo Pomodoro',
+        meta: 'Itália, 1996',
+        model: 'Assets/A.fbx',
+        description: 'Uma esfera dourada dentro de outra esfera, símbolo da fragilidade da ordem mundial.'
+      },
+      B: {
+        title: 'Non Violence',
+        artist: 'Carl Fredrik Reuterswärd',
+        meta: 'Luxemburgo (em nome da Suécia), 1988',
+        model: 'Assets/B.fbx',
+        description: 'Um revólver com o cano amarrado em nó — símbolo universal do desarmamento.'
+      },
+      C: {
+        title: 'Busto de Mahatma Gandhi',
+        artist: 'Ram Sutar',
+        meta: 'Índia, 2022',
+        model: 'Assets/C.fbx',
+        description: 'Primeira escultura de Gandhi na sede da ONU, homenagem à resistência não violenta.'
+      }
+    };
+
+    function init() {
+      const params = new URLSearchParams(window.location.search);
+      const obraId = params.get('obra');
+
+      if (!obraId || !obras[obraId]) {
+        document.getElementById('arTitle').textContent = 'Obra não encontrada';
+        return;
+      }
+
+      const obra = obras[obraId];
+
+      // Update page info
+      document.title = `${obra.title} — AR | Beyond the Surface`;
+      document.getElementById('arTitle').textContent = obra.title;
+      document.getElementById('arArtist').textContent = `${obra.artist} — ${obra.meta}`;
+
+      // Show info card
+      const infoCard = document.getElementById('arInfoCard');
+      infoCard.style.display = 'block';
+      document.getElementById('arTag').textContent = `Obra ${obraId}`;
+      document.getElementById('arCardTitle').textContent = obra.title;
+      document.getElementById('arCardDesc').textContent = obra.description;
+
+      // Set model source
+      const viewer = document.getElementById('modelViewer');
+      // model-viewer supports GLB/GLTF natively. FBX requires conversion.
+      // We set the source anyway and show a note about FBX format.
+      viewer.setAttribute('src', obra.model);
+      document.getElementById('noteFbx').style.display = 'block';
+
+      // Check for GLB version (preferred)
+      const glbPath = obra.model.replace('.fbx', '.glb');
+      fetch(glbPath, { method: 'HEAD' })
+        .then(res => {
+          if (res.ok) {
+            viewer.setAttribute('src', glbPath);
+            document.getElementById('noteFbx').style.display = 'none';
+          }
+        })
+        .catch(() => {});
+
+      // Mark as found
+      markAsFound(obraId);
+    }
+
+    function markAsFound(obraId) {
+      const key = 'obras_found';
+      let found = JSON.parse(localStorage.getItem(key) || '{}');
+
+      if (!found[obraId]) {
+        found[obraId] = { timestamp: new Date().toISOString() };
+        localStorage.setItem(key, JSON.stringify(found));
+        document.getElementById('foundMsg').style.display = 'block';
+      } else {
+        // Already found, show different message
+        const msg = document.getElementById('foundMsg');
+        msg.textContent = '✅ Você já encontrou esta obra!';
+        msg.style.display = 'block';
+      }
+    }
+
+    init();
+  </script>
+</body>
+</html>

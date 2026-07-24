@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Beyond the Surface — Descubra obras de arte icônicas da sede das Nações Unidas em realidade aumentada pelo campus. FAMUN 2026.">
+  <title>Beyond the Surface | FAMUN</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌍</text></svg>">
+</head>
+<body>
+
+  <!-- Animated Background -->
+  <div class="bg-animation">
+    <div class="orb"></div>
+    <div class="orb"></div>
+    <div class="orb"></div>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="hero" id="hero">
+    <div class="hero-badge">
+      <span class="badge-dot"></span>
+      FAMUN 2026
+    </div>
+    <h1>Beyond the Surface</h1>
+    <p class="subtitle">Descubra. Identifique. Mergulhe.</p>
+    <div class="hero-text">
+      <p>
+        Bem-vindos! Prepare-se para explorar o campus de um jeito completamente diferente!
+        Espalhadas pelo campus, <strong>20 imagens virtuais</strong> de obras reais da sede das Nações Unidas em
+        Nova York aguardam para serem descobertas. Seu objetivo é encontrá-las, identificá-las com
+        o seu dispositivo eletrônico e mergulhar na história e na arte que constroem o cenário mais
+        icônico da diplomacia mundial.
+      </p>
+      <p>
+        Mais do que uma caça ao tesouro, o <strong>Beyond the Surface</strong> é um convite para olhar além do
+        óbvio — cada imagem esconde uma história, um símbolo, um significado.
+      </p>
+      <p>
+        Reúna os delegados, ativem suas mentes e celulares — e que comecem as descobertas! 🌍
+      </p>
+    </div>
+  </section>
+
+  <!-- Progress Section -->
+  <section class="progress-section" id="progress">
+    <div class="progress-container">
+      <div class="progress-header">
+        <span class="progress-label">Obras Encontradas</span>
+        <span class="progress-count" id="progressCount">0 / 3</span>
+      </div>
+      <div class="progress-bar-track">
+        <div class="progress-bar-fill" id="progressBar" style="width: 0%"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Obras Section -->
+  <section class="obras-section" id="obras">
+    <h2 class="obras-section-title">Galeria de Obras</h2>
+
+    <!-- Obra A -->
+    <article class="obra-card" id="card-A" data-obra="A">
+      <div class="obra-image-container">
+        <img class="obra-image" src="Assets/A.png" alt="Sphere Within Sphere — esfera dourada no jardim da ONU" loading="lazy">
+        <div class="obra-image-overlay"></div>
+        <div class="obra-status not-found" id="status-A">
+          <span class="status-icon">✗</span>
+          <span class="status-text">Não encontrada</span>
+        </div>
+      </div>
+      <div class="obra-content">
+        <div class="obra-number">Obra I</div>
+        <h3 class="obra-title">Sphere Within Sphere</h3>
+        <p class="obra-meta">Itália, 1996</p>
+        <p class="obra-artist">Arnaldo Pomodoro</p>
+        <p class="obra-description">
+          Uma esfera dourada dentro de outra esfera, com uma fissura que revela engrenagens e mecanismos internos. Doada pela
+          Itália, a obra é um dos ícones mais fotografados da ONU. Simboliza a fragilidade da ordem mundial — por fora, o globo
+          parece perfeito; por dentro, tensões e conflitos o fragmentam. Para o tema de Juventude e Desarmamento, a escultura
+          convida os jovens a enxergar além das aparências e agir para reparar as fissuras do mundo.
+        </p>
+        <div class="obra-actions">
+          <button class="btn-scan btn-primary" onclick="showQR('A')" id="btn-qr-A">
+            📱 Ver QR Code
+          </button>
+          <a class="btn-scan btn-secondary" href="ar.html?obra=A" id="btn-ar-A">
+            🔮 Ver em 3D
+          </a>
+        </div>
+      </div>
+    </article>
+
+    <!-- Obra B -->
+    <article class="obra-card" id="card-B" data-obra="B">
+      <div class="obra-image-container">
+        <img class="obra-image" src="Assets/B.png" alt="Non Violence — revólver com cano amarrado em nó" loading="lazy">
+        <div class="obra-image-overlay"></div>
+        <div class="obra-status not-found" id="status-B">
+          <span class="status-icon">✗</span>
+          <span class="status-text">Não encontrada</span>
+        </div>
+      </div>
+      <div class="obra-content">
+        <div class="obra-number">Obra II</div>
+        <h3 class="obra-title">Non Violence</h3>
+        <p class="obra-meta">Luxemburgo (em nome da Suécia), 1988</p>
+        <p class="obra-artist">Carl Fredrik Reuterswärd</p>
+        <p class="obra-description">
+          Um revólver Colt Python calibre .357 magnum em tamanho monumental, com o cano amarrado em nó. A obra foi criada pelo
+          artista sueco após o assassinato de John Lennon em 1980, como resposta direta à violência das armas de fogo. Tornou-se
+          símbolo universal do desarmamento. Para delegados jovens, é um lembrete poderoso de que a violência armada pode ser
+          transformada em arte, e que a paz é uma escolha ativa.
+        </p>
+        <div class="obra-actions">
+          <button class="btn-scan btn-primary" onclick="showQR('B')" id="btn-qr-B">
+            📱 Ver QR Code
+          </button>
+          <a class="btn-scan btn-secondary" href="ar.html?obra=B" id="btn-ar-B">
+            🔮 Ver em 3D
+          </a>
+        </div>
+      </div>
+    </article>
+
+    <!-- Obra C -->
+    <article class="obra-card" id="card-C" data-obra="C">
+      <div class="obra-image-container">
+        <img class="obra-image" src="Assets/C.png" alt="Busto de Mahatma Gandhi na sede da ONU" loading="lazy">
+        <div class="obra-image-overlay"></div>
+        <div class="obra-status not-found" id="status-C">
+          <span class="status-icon">✗</span>
+          <span class="status-text">Não encontrada</span>
+        </div>
+      </div>
+      <div class="obra-content">
+        <div class="obra-number">Obra III</div>
+        <h3 class="obra-title">Busto de Mahatma Gandhi</h3>
+        <p class="obra-meta">Índia, 2022</p>
+        <p class="obra-artist">Ram Sutar</p>
+        <p class="obra-description">
+          Primeira escultura de Gandhi instalada na sede da ONU, inaugurada em dezembro de 2022 na presença do Secretário-Geral
+          António Guterres. Criada pelo escultor indiano Ram Sutar, a obra homenageia o líder da resistência não violenta que
+          inspirou movimentos de paz e direitos civis ao redor do mundo. Para a juventude, Gandhi representa a prova de que a
+          resistência pacífica pode ser mais poderosa do que qualquer arma.
+        </p>
+        <div class="obra-actions">
+          <button class="btn-scan btn-primary" onclick="showQR('C')" id="btn-qr-C">
+            📱 Ver QR Code
+          </button>
+          <a class="btn-scan btn-secondary" href="ar.html?obra=C" id="btn-ar-C">
+            🔮 Ver em 3D
+          </a>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>Beyond the Surface © FAMUN 2026 — Explore. Descubra. Transforme.</p>
+  </footer>
+
+  <!-- QR Modal -->
+  <div class="modal-overlay" id="qrModal">
+    <div class="modal-content">
+      <h3 id="modalTitle">QR Code</h3>
+      <p id="modalSubtitle">Escaneie para ver em realidade aumentada</p>
+      <div class="modal-qr" id="modalQRContainer"></div>
+      <p style="font-size: 0.75rem; color: #6a6a85; margin-bottom: 16px;" id="modalURL"></p>
+      <button class="modal-close" onclick="closeModal()">Fechar</button>
+    </div>
+  </div>
+
+  <!-- QRCode.js for generating real, scannable QR codes -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
