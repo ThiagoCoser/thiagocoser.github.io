@@ -91,21 +91,15 @@
   
   <script>
     // ===== CONFIGURATION =====
-    // Change BASE_URL when deploying to a real server
-    const BASE_URL = '';  // Empty for relative URLs (local testing)
-    // Example: const BASE_URL = 'https://your-site.github.io/famun/';
-
     const obras = [
-      { id: 'A', title: 'Sphere Within Sphere', artist: 'Arnaldo Pomodoro' },
-      { id: 'B', title: 'Non Violence', artist: 'Carl Fredrik Reuterswärd' },
-      { id: 'C', title: 'Busto de Mahatma Gandhi', artist: 'Ram Sutar' }
+      { id: 'A', title: 'Sphere Within Sphere', artist: 'Arnaldo Pomodoro', code: 'FAMUN_A_123' },
+      { id: 'B', title: 'Non Violence', artist: 'Carl Fredrik Reuterswärd', code: 'FAMUN_B_456' },
+      { id: 'C', title: 'Busto de Mahatma Gandhi', artist: 'Ram Sutar', code: 'FAMUN_C_789' }
     ];
 
     const grid = document.getElementById('qrGrid');
 
     obras.forEach(obra => {
-      const url = `${BASE_URL}ar.html?obra=${obra.id}`;
-
       const item = document.createElement('div');
       item.className = 'qr-item';
 
@@ -113,16 +107,16 @@
         <h2>Obra ${obra.id}</h2>
         <h3>${obra.title}</h3>
         <div id="qr-container-${obra.id}"></div>
-        <p class="url">${url}</p>
+        <p class="url">Código: <strong>${obra.code}</strong></p>
       `;
 
       grid.appendChild(item);
 
-      // Generate QR code
+      // Generate QR code with simple text
       const qrContainer = item.querySelector(`#qr-container-${obra.id}`);
       
       new QRCode(qrContainer, {
-        text: url,
+        text: obra.code,
         width: 256,
         height: 256,
         colorDark: '#000000',

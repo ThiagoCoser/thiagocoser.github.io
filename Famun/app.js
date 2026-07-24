@@ -2,20 +2,11 @@
 
 const STORAGE_KEY = 'obras_found';
 
-// Maps each QR code content to an obra ID.
-// The QR codes installed in the real environment should encode these exact strings.
-// Adjust these values to match whatever your physical QR codes contain.
+// Maps each simple QR code text to an obra ID.
 const QR_CODE_MAP = {
-  'FAMUN_OBRA_A': 'A',
-  'FAMUN_OBRA_B': 'B',
-  'FAMUN_OBRA_C': 'C',
-  // Fallbacks using URLs in case the QR code has the full URL
-  'http://localhost/ar.html?obra=A': 'A',
-  'http://localhost/ar.html?obra=B': 'B',
-  'http://localhost/ar.html?obra=C': 'C',
-  'ar.html?obra=A': 'A',
-  'ar.html?obra=B': 'B',
-  'ar.html?obra=C': 'C'
+  'FAMUN_A_123': 'A',
+  'FAMUN_B_456': 'B',
+  'FAMUN_C_789': 'C'
 };
 
 const obrasData = {
@@ -88,22 +79,18 @@ let html5QrCode = null;
 let currentScanTarget = null;
 let currentScanMode = null; // 'register' or 'ar'
 
-// A wrapper to extract ID from URL if the QR code is a full URL
+// A wrapper to extract ID from simple scan
 function extractIdFromScan(text) {
   text = text.trim();
   if (QR_CODE_MAP[text]) return QR_CODE_MAP[text];
   
-  // Try to parse as URL
+  // Also check if the user accidentally scanned a URL with obra parameter
   try {
-    const url = new URL(text, window.location.href);
+    const url = new URL(text);
     const param = url.searchParams.get('obra');
     if (param && ['A', 'B', 'C'].includes(param)) return param;
   } catch (e) {
-    // Check if it's a relative URL
-    if (text.includes('obra=')) {
-      const match = text.match(/obra=([ABC])/);
-      if (match) return match[1];
-    }
+    // Ignore URL parse errors
   }
   
   return null;
@@ -151,8 +138,7 @@ function startScanner(obraId) {
 
   const config = {
     fps: 10,
-    qrbox: { width: 250, height: 250 },
-    aspectRatio: 1.0
+    qrbox: { width: 250, height: 250 }
   };
 
   // Robust camera start: tries to get cameras first
@@ -231,7 +217,7 @@ function onQRCodeScanned(decodedText, expectedObraId) {
 
   } else {
     // Unrecognized QR code
-    feedback.textContent = '❌ QR Code não reconhecido. Procure o QR oficial da obra.';
+    feedback.textContent = `❌ QR Code inválido lido: "${decodedText}". Use o gerador oficial.`;
     feedback.className = 'scanner-feedback error';
   }
 }
