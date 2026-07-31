@@ -1,27 +1,19 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description"
-    content="FAMUN — Descubra obras de arte icônicas da sede das Nações Unidas em realidade aumentada pela Facamp.">
+  <meta name="description" content="FAMUN — Descubra obras de arte icônicas da sede das Nações Unidas.">
   <title>FACAMP | FAMUN | 2026</title>
   <link rel="stylesheet" href="style.css">
-  <link rel="icon"
-    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌍</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌍</text></svg>">
 </head>
-
 <body>
-
-  <!-- Animated Background -->
   <div class="bg-animation">
     <div class="orb"></div>
     <div class="orb"></div>
     <div class="orb"></div>
   </div>
-
-  <!-- Hero Section -->
   <section class="hero" id="hero">
     <div class="hero-badge">
       <span class="badge-dot"></span>
@@ -30,45 +22,29 @@
     <h1>FACAMP</h1>
     <p class="subtitle">Explore e colete obras da ONU</p>
     <div class="hero-text">
-      <p>
-        Bem-vindos! Prepare-se para explorar o campus de um jeito completamente diferente!
-        Espalhadas pelo campus, <strong>20 imagens virtuais</strong> de obras reais da sede das Nações Unidas em
-        Nova York aguardam para serem descobertas. Seu objetivo é encontrá-las, identificá-las com
-        o seu dispositivo eletrônico e mergulhar na história e na arte que constroem o cenário mais
-        icônico da diplomacia mundial.
-      </p>
-      <p>
-        Mais do que uma caça ao tesouro, o <strong> FAMUN 2026</strong> é um convite para olhar além do
-        óbvio: cada imagem esconde uma história, um símbolo, um significado.
-      </p>
-      <p>
-        Ativem suas mentes e celulares, e que comecem as descobertas!
-      </p>
+      <p>Bem-vindos! Prepare-se para explorar o campus de um jeito completamente diferente! Espalhadas pelo campus, <strong>20 obras de arte</strong> reais da sede das Nações Unidas em Nova York aguardam para serem descobertas.</p>
+      <p>Seu objetivo é encontrá-las, identificá-las com o seu dispositivo eletrônico e mergulhar na história e na arte que constroem o cenário mais icônico da diplomacia mundial.</p>
+      <p>Ativem suas mentes e celulares, e que comecem as descobertas!</p>
     </div>
   </section>
-
-  <!-- Progress Section -->
   <section class="progress-section" id="progress">
     <div class="progress-container">
       <div class="progress-header">
         <span class="progress-label">Obras Encontradas</span>
-        <span class="progress-count" id="progressCount">0 / 3</span>
+        <span class="progress-count" id="progressCount">0 / 20</span>
       </div>
       <div class="progress-bar-track">
         <div class="progress-bar-fill" id="progressBar" style="width: 0%"></div>
       </div>
     </div>
   </section>
-
-  <!-- Obras Section -->
   <section class="obras-section" id="obras">
     <h2 class="obras-section-title">Galeria de Obras</h2>
-
+    
     <!-- Obra A -->
     <article class="obra-card" id="card-A" data-obra="A">
       <div class="obra-image-container">
-        <img class="obra-image" src="Assets/A.png" alt="Sphere Within Sphere — esfera dourada no jardim da ONU"
-          loading="lazy">
+        <img class="obra-image" src="Assets/A.png" alt="Sphere Within Sphere" loading="lazy">
         <div class="obra-image-overlay"></div>
         <div class="obra-status not-found" id="status-A">
           <span class="status-icon">✗</span>
@@ -76,26 +52,17 @@
         </div>
       </div>
       <div class="obra-content">
-        <div class="obra-number">Obra I</div>
+        <div class="obra-number">Obra 1</div>
         <h3 class="obra-title">Sphere Within Sphere</h3>
         <p class="obra-meta">Itália, 1996</p>
         <p class="obra-artist">Arnaldo Pomodoro</p>
         <p class="obra-description">
-          Uma esfera dourada dentro de outra esfera, com uma fissura que revela engrenagens e mecanismos internos. Doada
-          pela
-          Itália, a obra é um dos ícones mais fotografados da ONU. Simboliza a fragilidade da ordem mundial — por fora,
-          o globo
-          parece perfeito; por dentro, tensões e conflitos o fragmentam. Para o tema de Juventude e Desarmamento, a
-          escultura
-          convida os jovens a enxergar além das aparências e agir para reparar as fissuras do mundo.
+          Uma esfera dourada dentro de outra esfera, com uma fissura que revela engrenagens e mecanismos internos. Doada pela Itália, a obra é um dos ícones mais fotografados da ONU. Simboliza a fragilidade da ordem mundial — por fora, o globo parece perfeito; por dentro, tensões e conflitos o fragmentam. Para o tema de Juventude e Desarmamento, a escultura convida os jovens a enxergar além das aparências e agir para reparar as fissuras do mundo.
         </p>
         <div class="obra-actions">
-          <button class="btn-scan btn-primary" onclick="openScanner('A', 'register')" id="btn-register-A">
+          <button class="btn-scan btn-primary" onclick="openScanner('A')" id="btn-register-A">
             📷 Registrar Obra
           </button>
-          <a class="btn-scan btn-secondary" href="ar.html?obra=A" id="btn-ar-A">
-            🔮 Ver em 3D
-          </a>
         </div>
       </div>
     </article>
@@ -103,7 +70,7 @@
     <!-- Obra B -->
     <article class="obra-card" id="card-B" data-obra="B">
       <div class="obra-image-container">
-        <img class="obra-image" src="Assets/B.png" alt="Non Violence — revólver com cano amarrado em nó" loading="lazy">
+        <img class="obra-image" src="Assets/B.png" alt="Non Violence" loading="lazy">
         <div class="obra-image-overlay"></div>
         <div class="obra-status not-found" id="status-B">
           <span class="status-icon">✗</span>
@@ -111,26 +78,17 @@
         </div>
       </div>
       <div class="obra-content">
-        <div class="obra-number">Obra II</div>
+        <div class="obra-number">Obra 2</div>
         <h3 class="obra-title">Non Violence</h3>
         <p class="obra-meta">Luxemburgo (em nome da Suécia), 1988</p>
         <p class="obra-artist">Carl Fredrik Reuterswärd</p>
         <p class="obra-description">
-          Um revólver Colt Python calibre .357 magnum em tamanho monumental, com o cano amarrado em nó. A obra foi
-          criada pelo
-          artista sueco após o assassinato de John Lennon em 1980, como resposta direta à violência das armas de fogo.
-          Tornou-se
-          símbolo universal do desarmamento. Para delegados jovens, é um lembrete poderoso de que a violência armada
-          pode ser
-          transformada em arte, e que a paz é uma escolha ativa.
+          Um revólver Colt Python calibre .357 magnum em tamanho monumental, com o cano amarrado em nó. A obra foi criada pelo artista sueco após o assassinato de John Lennon em 1980, como resposta direta à violência das armas de fogo. Tornou-se símbolo universal do desarmamento. Para delegados jovens, é um lembrete poderoso de que a violência armada pode ser transformada em arte, e que a paz é uma escolha ativa.
         </p>
         <div class="obra-actions">
-          <button class="btn-scan btn-primary" onclick="openScanner('B', 'register')" id="btn-register-B">
+          <button class="btn-scan btn-primary" onclick="openScanner('B')" id="btn-register-B">
             📷 Registrar Obra
           </button>
-          <a class="btn-scan btn-secondary" href="ar.html?obra=B" id="btn-ar-B">
-            🔮 Ver em 3D
-          </a>
         </div>
       </div>
     </article>
@@ -138,7 +96,7 @@
     <!-- Obra C -->
     <article class="obra-card" id="card-C" data-obra="C">
       <div class="obra-image-container">
-        <img class="obra-image" src="Assets/C.png" alt="Busto de Mahatma Gandhi na sede da ONU" loading="lazy">
+        <img class="obra-image" src="Assets/C.png" alt="Busto de Mahatma Gandhi" loading="lazy">
         <div class="obra-image-overlay"></div>
         <div class="obra-status not-found" id="status-C">
           <span class="status-icon">✗</span>
@@ -146,37 +104,468 @@
         </div>
       </div>
       <div class="obra-content">
-        <div class="obra-number">Obra III</div>
+        <div class="obra-number">Obra 3</div>
         <h3 class="obra-title">Busto de Mahatma Gandhi</h3>
         <p class="obra-meta">Índia, 2022</p>
         <p class="obra-artist">Ram Sutar</p>
         <p class="obra-description">
-          Primeira escultura de Gandhi instalada na sede da ONU, inaugurada em dezembro de 2022 na presença do
-          Secretário-Geral
-          António Guterres. Criada pelo escultor indiano Ram Sutar, a obra homenageia o líder da resistência não
-          violenta que
-          inspirou movimentos de paz e direitos civis ao redor do mundo. Para a juventude, Gandhi representa a prova de
-          que a
-          resistência pacífica pode ser mais poderosa do que qualquer arma.
+          Primeira escultura de Gandhi instalada na sede da ONU, inaugurada em dezembro de 2022 na presença do Secretário-Geral António Guterres. Criada pelo escultor indiano Ram Sutar, a obra homenageia o líder da resistência não violenta que inspirou movimentos de paz e direitos civis ao redor do mundo. Para a juventude, Gandhi representa a prova de que a resistência pacífica pode ser mais poderosa do que qualquer arma.
         </p>
         <div class="obra-actions">
-          <button class="btn-scan btn-primary" onclick="openScanner('C', 'register')" id="btn-register-C">
+          <button class="btn-scan btn-primary" onclick="openScanner('C')" id="btn-register-C">
             📷 Registrar Obra
           </button>
-          <a class="btn-scan btn-secondary" href="ar.html?obra=C" id="btn-ar-C">
-            🔮 Ver em 3D
-          </a>
         </div>
       </div>
     </article>
-  </section>
 
-  <!-- Footer -->
+    <!-- Obra D -->
+    <article class="obra-card" id="card-D" data-obra="D">
+      <div class="obra-image-container">
+        <img class="obra-image" src="Assets/D.png" alt="Estátua de Nelson Mandela" loading="lazy">
+        <div class="obra-image-overlay"></div>
+        <div class="obra-status not-found" id="status-D">
+          <span class="status-icon">✗</span>
+          <span class="status-text">Não encontrada</span>
+        </div>
+      </div>
+      <div class="obra-content">
+        <div class="obra-number">Obra 4</div>
+        <h3 class="obra-title">Estátua de Nelson Mandela</h3>
+        <p class="obra-meta">África do Sul</p>
+        
+        <p class="obra-description">
+          Estátua de tamanho real do ex-presidente sul-africano e Nobel da Paz Nelson Mandela (1918–2013), doada pela África do Sul à ONU. Homenageia o líder que passou 27 anos preso e ainda assim emergiu pregando reconciliação em vez de vingança. Para delegados jovens, sua trajetória é um testemunho de que a construção da paz exige sacrifício, diálogo e o abandono das armas da opressão.
+        </p>
+        <div class="obra-actions">
+          <button class="btn-scan btn-primary" onclick="openScanner('D')" id="btn-register-D">
+            📷 Registrar Obra
+          </button>
+        </div>
+      </div>
+    </article>
+
+    <!-- Obra E -->
+    <article class="obra-card" id="card-E" data-obra="E">
+      <div class="obra-image-container">
+        <img class="obra-image" src="Assets/E.png" alt="Let Us Beat Swords into Ploughshares" loading="lazy">
+        <div class="obra-image-overlay"></div>
+        <div class="obra-status not-found" id="status-E">
+          <span class="status-icon">✗</span>
+          <span class="status-text">Não encontrada</span>
+        </div>
+      </div>
+      <div class="obra-content">
+        <div class="obra-number">Obra 5</div>
+        <h3 class="obra-title">Let Us Beat Swords into Ploughshares</h3>
+        <p class="obra-meta">União Soviética, 1959</p>
+        <p class="obra-artist">Yevgeny Vuchetich</p>
+        <p class="obra-description">
+          Um homem musculoso segura um martelo e uma espada dobrada, transformando-a em um arado. O título é referência direta ao Livro de Isaías (2:4). Doada pela URSS em plena Guerra Fria, demonstra que mesmo rivais ideológicos poderiam convergir no ideal da paz. É o símbolo mais reconhecido do compromisso da ONU com o desarmamento, e um apelo direto às novas gerações para converter instrumentos de guerra em ferramentas de construção.
+        </p>
+        <div class="obra-actions">
+          <button class="btn-scan btn-primary" onclick="openScanner('E')" id="btn-register-E">
+            📷 Registrar Obra
+          </button>
+        </div>
+      </div>
+    </article>
+
+    <!-- Obra F -->
+    <article class="obra-card" id="card-F" data-obra="F">
+      <div class="obra-image-container">
+        <img class="obra-image" src="Assets/F.png" alt="Good Defeats Evil" loading="lazy">
+        <div class="obra-image-overlay"></div>
+        <div class="obra-status not-found" id="status-F">
+          <span class="status-icon">✗</span>
+          <span class="status-text">Não encontrada</span>
+        </div>
+      </div>
+      <div class="obra-content">
+        <div class="obra-number">Obra 6</div>
+        <h3 class="obra-title">Good Defeats Evil</h3>
+        <p class="obra-meta">União Soviética / Rússia, 1990</p>
+        <p class="obra-artist">Zurab Tsereteli</p>
+        <p class="obra-description">
+          São Jorge é um dragão feito de fragmentos reais de mísseis nucleares soviéticos SS-20 e norte-americanos Pershing II, destruídos após o Tratado INF de 1987. A escultura transforma literalmente armas nucleares em arte pela paz. Para o tema do desarmamento, representa um dos momentos mais concretos da história em que rivais da Guerra Fria transformaram arsenais nucleares em um símbolo de cooperação.
+        </p>
+        <div class="obra-actions">
+          <button class="btn-scan btn-primary" onclick="openScanner('F')" id="btn-register-F">
+            📷 Registrar Obra
+          </button>
+        </div>
+      </div>
+    </article>
+
+    <!-- Obra G -->
+    <article class="obra-card" id="card-G" data-obra="G">
+      <div class="obra-image-container">
+        <img class="obra-image" src="Assets/G.png" alt="Single Form" loading="lazy">
+        <div class="obra-image-overlay"></div>
+        <div class="obra-status not-found" id="status-G">
+          <span class="status-icon">✗</span>
+          <span class="status-text">Não encontrada</span>
+        </div>
+      </div>
+      <div class="obra-content">
+        <div class="obra-number">Obra 7</div>
+        <h3 class="obra-title">Single Form</h3>
+        <p class="obra-meta">Reino Unido / Fundação Jacob Blaustein, 1964</p>
+        <p class="obra-artist">Barbara Hepworth</p>
+        <p class="obra-description">
+          Uma forma abstrata vertical em bronze, com um orifício circular no centro, instalada na piscina em frente ao Edifício do Secretariado. Criada como memorial ao Secretário-Geral Dag Hammarskjöld, morto em um acidente aéreo durante missão de paz no Congo em 1961. Para os jovens, a obra é um símbolo de que a busca pela paz pode custar vidas, e que cada líder que a defende merece ser lembrado.
+        </p>
+        <div class="obra-actions">
+          <button class="btn-scan btn-primary" onclick="openScanner('G')" id="btn-register-G">
+            📷 Registrar Obra
+          </button>
+        </div>
+      </div>
+    </article>
+
+    <!-- Obra H -->
+    <article class="obra-card" id="card-H" data-obra="H">
+      <div class="obra-image-container">
+        <img class="obra-image" src="Assets/H.png" alt="Vitrô da Paz (Peace Window)" loading="lazy">
+        <div class="obra-image-overlay"></div>
+        <div class="obra-status not-found" id="status-H">
+          <span class="status-icon">✗</span>
+          <span class="status-text">Não encontrada</span>
+        </div>
+      </div>
+      <div class="obra-content">
+        <div class="obra-number">Obra 8</div>
+        <h3 class="obra-title">Vitrô da Paz (Peace Window)</h3>
+        <p class="obra-meta">Doado pelo artista e funcionários da ONU, 1964</p>
+        <p class="obra-artist">Marc Chagall</p>
+        <p class="obra-description">
+          Vitral monumental em tons de azul e verde, instalado no Edifício da Assembleia Geral como tributo a Dag Hammarskjöld. O painel retrata à esquerda humanos e animais em um mundo pacífico e à direita a luta pela paz, com símbolos musicais em referência à 9ª Sinfonía de Beethoven. A obra convida a juventude a imaginar como seria o mundo se cada nação escolhesse a beleza e a harmonia em vez do conflito.
+        </p>
+        <div class="obra-actions">
+          <button class="btn-scan btn-primary" onclick="openScanner('H')" id="btn-register-H">
+            📷 Registrar Obra
+          </button>
+        </div>
+      </div>
+    </article>
+
+    <!-- Obra I -->
+    <article class="obra-card" id="card-I" data-obra="I">
+      <div class="obra-image-container">
+        <img class="obra-image" src="Assets/I.png" alt="Guerra e Paz (War and Peace)" loading="lazy">
+        <div class="obra-image-overlay"></div>
+        <div class="obra-status not-found" id="status-I">
+          <span class="status-icon">✗</span>
+          <span class="status-text">Não encontrada</span>
+        </div>
+      </div>
+      <div class="obra-content">
+        <div class="obra-number">Obra 9</div>
+        <h3 class="obra-title">Guerra e Paz (War and Peace)</h3>
+        <p class="obra-meta">Brasil, 1956</p>
+        <p class="obra-artist">Cândido Portinari</p>
+        <p class="obra-description">
+          Dois painéis monumentais do pintor brasileiro Cândido Portinari, expostos na entrada do Conselho de Segurança. 'Guerra' retrata o sofrimento de refugiados e a devastação dos conflitos armados. 'Paz' mostra a dança, o trabalho, a infância e a esperança. Em 2015, o Secretário-Geral Ban Ki-moon descreveu a obra como 'um chamado à ação'. Para delegados jovens, os painéis são um espelho do custo humano da guerra.
+        </p>
+        <div class="obra-actions">
+          <button class="btn-scan btn-primary" onclick="openScanner('I')" id="btn-register-I">
+            📷 Registrar Obra
+          </button>
+        </div>
+      </div>
+    </article>
+
+    <!-- Obra J -->
+    <article class="obra-card" id="card-J" data-obra="J">
+      <div class="obra-image-container">
+        <img class="obra-image" src="Assets/J.png" alt="The Golden Rule (A Regra de Ouro)" loading="lazy">
+        <div class="obra-image-overlay"></div>
+        <div class="obra-status not-found" id="status-J">
+          <span class="status-icon">✗</span>
+          <span class="status-text">Não encontrada</span>
+        </div>
+      </div>
+      <div class="obra-content">
+        <div class="obra-number">Obra 10</div>
+        <h3 class="obra-title">The Golden Rule (A Regra de Ouro)</h3>
+        <p class="obra-meta">Estados Unidos, 1985</p>
+        <p class="obra-artist">Mosaico veneziano baseado em Norman Rockwell</p>
+        <p class="obra-description">
+          Mosaico criado por artistas venezianos a partir de uma pintura de Norman Rockwell, presenteado à ONU pela primeira-dama Nancy Reagan para celebrar o 40º aniversário da organização. Retrata rostos de pessoas de diferentes etnias, religiões e culturas ao redor da frase 'Faça aos outros o que gostaria que fizessem a você'. Para a juventude, é um lembrete de que a empatia intercultural é o fundamento de qualquer projeto de paz duradoura.
+        </p>
+        <div class="obra-actions">
+          <button class="btn-scan btn-primary" onclick="openScanner('J')" id="btn-register-J">
+            📷 Registrar Obra
+          </button>
+        </div>
+      </div>
+    </article>
+
+    <!-- Obra K -->
+    <article class="obra-card" id="card-K" data-obra="K">
+      <div class="obra-image-container">
+        <img class="obra-image" src="Assets/K.png" alt="Sino da Paz (Japanese Peace Bell)" loading="lazy">
+        <div class="obra-image-overlay"></div>
+        <div class="obra-status not-found" id="status-K">
+          <span class="status-icon">✗</span>
+          <span class="status-text">Não encontrada</span>
+        </div>
+      </div>
+      <div class="obra-content">
+        <div class="obra-number">Obra 11</div>
+        <h3 class="obra-title">Sino da Paz (Japanese Peace Bell)</h3>
+        <p class="obra-meta">Japão, 1954</p>
+        <p class="obra-artist">Fundido pela Tada Factory</p>
+        <p class="obra-description">
+          Fundido a partir de moedas doadas por representantes de 60 países durante a 13ª Assembleia Geral, o Sino da Paz fica em um jardim da ONU e é tocado duas vezes por ano: no primeiro dia da primavera e na abertura da Assembleia Geral. Para os jovens delegados, soar esse sino é um ritual de renovação do compromisso com a paz.
+        </p>
+        <div class="obra-actions">
+          <button class="btn-scan btn-primary" onclick="openScanner('K')" id="btn-register-K">
+            📷 Registrar Obra
+          </button>
+        </div>
+      </div>
+    </article>
+
+    <!-- Obra L -->
+    <article class="obra-card" id="card-L" data-obra="L">
+      <div class="obra-image-container">
+        <img class="obra-image" src="Assets/L.png" alt="Titans" loading="lazy">
+        <div class="obra-image-overlay"></div>
+        <div class="obra-status not-found" id="status-L">
+          <span class="status-icon">✗</span>
+          <span class="status-text">Não encontrada</span>
+        </div>
+      </div>
+      <div class="obra-content">
+        <div class="obra-number">Obra 12</div>
+        <h3 class="obra-title">Titans</h3>
+        <p class="obra-meta">Doado pela Assembleia Mundial da Juventude, 1973</p>
+        <p class="obra-artist">Lumen Martin Winter</p>
+        <p class="obra-description">
+          Cinco gigantes representando os cinco continentes movem o mundo da escuridão para a luz. A obra foi comissionada pela ONU em 1971 para comemorar a primeira Assembleia Mundial da Juventude, um evento que pavimentou o caminho para uma melhor compreensão entre os jovens em prol da paz, justiça e progresso. É a obra da coleção mais diretamente ligada ao protagonismo juvenil.
+        </p>
+        <div class="obra-actions">
+          <button class="btn-scan btn-primary" onclick="openScanner('L')" id="btn-register-L">
+            📷 Registrar Obra
+          </button>
+        </div>
+      </div>
+    </article>
+
+    <!-- Obra M -->
+    <article class="obra-card" id="card-M" data-obra="M">
+      <div class="obra-image-container">
+        <img class="obra-image" src="Assets/M.png" alt="Anyanwu" loading="lazy">
+        <div class="obra-image-overlay"></div>
+        <div class="obra-status not-found" id="status-M">
+          <span class="status-icon">✗</span>
+          <span class="status-text">Não encontrada</span>
+        </div>
+      </div>
+      <div class="obra-content">
+        <div class="obra-number">Obra 13</div>
+        <h3 class="obra-title">Anyanwu</h3>
+        <p class="obra-meta">Nigéria, 1966</p>
+        <p class="obra-artist">Ben Enwonwu</p>
+        <p class="obra-description">
+          Escultura em bronze da figura mitológica igbo Ani, deusa da terra e da fertilidade, com braços erguidos em gesto de abertura e bênção. Foi uma das primeiras obras africanas a entrar na coleção da ONU. Para a juventude, representa o papel das mulheres e das tradições indígenas na construção da paz, vozes frequentemente silenciadas nas negociações de desarmamento.
+        </p>
+        <div class="obra-actions">
+          <button class="btn-scan btn-primary" onclick="openScanner('M')" id="btn-register-M">
+            📷 Registrar Obra
+          </button>
+        </div>
+      </div>
+    </article>
+
+    <!-- Obra N -->
+    <article class="obra-card" id="card-N" data-obra="N">
+      <div class="obra-image-container">
+        <img class="obra-image" src="Assets/N.png" alt="Reclining Figure" loading="lazy">
+        <div class="obra-image-overlay"></div>
+        <div class="obra-status not-found" id="status-N">
+          <span class="status-icon">✗</span>
+          <span class="status-text">Não encontrada</span>
+        </div>
+      </div>
+      <div class="obra-content">
+        <div class="obra-number">Obra 14</div>
+        <h3 class="obra-title">Reclining Figure</h3>
+        <p class="obra-meta">Reino Unido, Doação do artista</p>
+        <p class="obra-artist">Henry Moore</p>
+        <p class="obra-description">
+          Figura feminina reclinada em bronze abstrato, instalada nos jardins da ONU. Henry Moore doou a obra por admiração ao Secretário-Geral Dag Hammarskjöld. Sua figura reclinada, com vazios e volumes em diálogo, evoca tanto a vulnerabilidade quanto a resistência do corpo humano. Para delegados jovens, a obra convida à reflexão sobre o que significa proteger corpos humanos em contextos de conflito armado.
+        </p>
+        <div class="obra-actions">
+          <button class="btn-scan btn-primary" onclick="openScanner('N')" id="btn-register-N">
+            📷 Registrar Obra
+          </button>
+        </div>
+      </div>
+    </article>
+
+    <!-- Obra O -->
+    <article class="obra-card" id="card-O" data-obra="O">
+      <div class="obra-image-container">
+        <img class="obra-image" src="Assets/O.png" alt="Consciousness (Consciência)" loading="lazy">
+        <div class="obra-image-overlay"></div>
+        <div class="obra-status not-found" id="status-O">
+          <span class="status-icon">✗</span>
+          <span class="status-text">Não encontrada</span>
+        </div>
+      </div>
+      <div class="obra-content">
+        <div class="obra-number">Obra 15</div>
+        <h3 class="obra-title">Consciousness (Consciência)</h3>
+        <p class="obra-meta">Mongólia, 2017</p>
+        <p class="obra-artist">Ochirbold Ayurzana</p>
+        <p class="obra-description">
+          Escultura monumental dedicada à adoção da Agenda 2030 para o Desenvolvimento Sustentável e do Acordo de Paris sobre o Clima. Com quase 3 metros de altura, a obra em aço representa a consciência humana expandida para os desafios do século XXI. Para a juventude de hoje, é um convite a reconhecer que desarmamento e sustentabilidade são causas interligadas, não há paz em um planeta destruído
+        </p>
+        <div class="obra-actions">
+          <button class="btn-scan btn-primary" onclick="openScanner('O')" id="btn-register-O">
+            📷 Registrar Obra
+          </button>
+        </div>
+      </div>
+    </article>
+
+    <!-- Obra P -->
+    <article class="obra-card" id="card-P" data-obra="P">
+      <div class="obra-image-container">
+        <img class="obra-image" src="Assets/P.png" alt="Mural do Conselho de Segurança" loading="lazy">
+        <div class="obra-image-overlay"></div>
+        <div class="obra-status not-found" id="status-P">
+          <span class="status-icon">✗</span>
+          <span class="status-text">Não encontrada</span>
+        </div>
+      </div>
+      <div class="obra-content">
+        <div class="obra-number">Obra 16</div>
+        <h3 class="obra-title">Mural do Conselho de Segurança</h3>
+        <p class="obra-meta">Noruega, 1952</p>
+        <p class="obra-artist">Per Krohg</p>
+        <p class="obra-description">
+          Mural que ocupa toda a parede do fundo da Sala do Conselho de Segurança, retratando uma fênix renascendo das cinzas da guerra, rodeada de pessoas de diferentes raças e nações.
+        </p>
+        <div class="obra-actions">
+          <button class="btn-scan btn-primary" onclick="openScanner('P')" id="btn-register-P">
+            📷 Registrar Obra
+          </button>
+        </div>
+      </div>
+    </article>
+
+    <!-- Obra Q -->
+    <article class="obra-card" id="card-Q" data-obra="Q">
+      <div class="obra-image-container">
+        <img class="obra-image" src="Assets/Q.png" alt="Tapeçaria de Guernica" loading="lazy">
+        <div class="obra-image-overlay"></div>
+        <div class="obra-status not-found" id="status-Q">
+          <span class="status-icon">✗</span>
+          <span class="status-text">Não encontrada</span>
+        </div>
+      </div>
+      <div class="obra-content">
+        <div class="obra-number">Obra 17</div>
+        <h3 class="obra-title">Tapeçaria de Guernica</h3>
+        <p class="obra-meta">Doação particular, 1985</p>
+        <p class="obra-artist">Jacqueline de la Baume Dürrbach (cópia do original de Pablo Picasso)</p>
+        <p class="obra-description">
+          Reprodução em tapeçaria do famoso quadro 'Guernica' de Pablo Picasso (1937), que retrata o bombardeio nazista da cidade basca de Guernica durante a Guerra Civil Espanhola. Por décadas ficou exposta na entrada da Sala do Conselho de Segurança, local onde líderes decidem sobre o uso da força militar. Sua presença naquele corredor era um alerta permanente: toda autorização de uso da força tem um custo humano
+        </p>
+        <div class="obra-actions">
+          <button class="btn-scan btn-primary" onclick="openScanner('Q')" id="btn-register-Q">
+            📷 Registrar Obra
+          </button>
+        </div>
+      </div>
+    </article>
+
+    <!-- Obra R -->
+    <article class="obra-card" id="card-R" data-obra="R">
+      <div class="obra-image-container">
+        <img class="obra-image" src="Assets/R.png" alt="Hope (Esperança)" loading="lazy">
+        <div class="obra-image-overlay"></div>
+        <div class="obra-status not-found" id="status-R">
+          <span class="status-icon">✗</span>
+          <span class="status-text">Não encontrada</span>
+        </div>
+      </div>
+      <div class="obra-content">
+        <div class="obra-number">Obra 18</div>
+        <h3 class="obra-title">Hope (Esperança)</h3>
+        <p class="obra-meta">Letônia, 1994</p>
+        <p class="obra-artist">Edīte Pauls-Vīgnere</p>
+        <p class="obra-description">
+          Tapeçaria têxtil da artista letã Edīte Pauls-Vīgnere, instalada no saguão do Edifício da Assembleia Geral. A figura central é uma mulher vestida de branco, segurando o sol, diante do Monumento da Liberdade de Riga. A obra foi doada após a restauração da independência da Letônia em 1991. Para jovens, é um símbolo de que a esperança resiste mesmo nos períodos mais sombrios.
+        </p>
+        <div class="obra-actions">
+          <button class="btn-scan btn-primary" onclick="openScanner('R')" id="btn-register-R">
+            📷 Registrar Obra
+          </button>
+        </div>
+      </div>
+    </article>
+
+    <!-- Obra S -->
+    <article class="obra-card" id="card-S" data-obra="S">
+      <div class="obra-image-container">
+        <img class="obra-image" src="Assets/S.png" alt="Surya; O Deus Sol" loading="lazy">
+        <div class="obra-image-overlay"></div>
+        <div class="obra-status not-found" id="status-S">
+          <span class="status-icon">✗</span>
+          <span class="status-text">Não encontrada</span>
+        </div>
+      </div>
+      <div class="obra-content">
+        <div class="obra-number">Obra 19</div>
+        <h3 class="obra-title">Surya; O Deus Sol</h3>
+        <p class="obra-meta">Doação de Indira Gandhi, Índia, 1982</p>
+        <p class="obra-artist">Escultor indiano desconhecido (século XI)</p>
+        <p class="obra-description">
+          Escultura em pedra negra do século XI representando Surya, o deus sol hindu, datada do período Pala tardio. Foi doada à ONU pela então primeira-ministra Indira Gandhi em 1982. É uma das peças mais antigas da coleção e demonstra como a diplomacia cultural pode atravessar milênios. Para jovens delegados, a obra lembra que as civilizações que hoje debatem o desarmamento têm raízes culturais profundas, e que respeitá-las é parte essencial de qualquer diálogo de paz.
+        </p>
+        <div class="obra-actions">
+          <button class="btn-scan btn-primary" onclick="openScanner('S')" id="btn-register-S">
+            📷 Registrar Obra
+          </button>
+        </div>
+      </div>
+    </article>
+
+    <!-- Obra T -->
+    <article class="obra-card" id="card-T" data-obra="T">
+      <div class="obra-image-container">
+        <img class="obra-image" src="Assets/T.png" alt="Fragmento do Muro de Berlim" loading="lazy">
+        <div class="obra-image-overlay"></div>
+        <div class="obra-status not-found" id="status-T">
+          <span class="status-icon">✗</span>
+          <span class="status-text">Não encontrada</span>
+        </div>
+      </div>
+      <div class="obra-content">
+        <div class="obra-number">Obra 20</div>
+        <h3 class="obra-title">Fragmento do Muro de Berlim</h3>
+        <p class="obra-meta">Alemanha</p>
+        
+        <p class="obra-description">
+          Seção original do Muro de Berlim (1961–1989), doada pela Alemanha à ONU. O muro dividiu famílias, separou nações e simbolizou por quase três décadas o confronto armado da Guerra Fria. Após sua queda em 1989, fragmentos foram distribuídos pelo mundo como monumentos ao fim de uma era de divisão. Exposto na sede da ONU, é um testemunho físico de que muros caem, e que nenhuma geração deveria aceitar como permanente aquilo que parece intransponível.
+        </p>
+        <div class="obra-actions">
+          <button class="btn-scan btn-primary" onclick="openScanner('T')" id="btn-register-T">
+            📷 Registrar Obra
+          </button>
+        </div>
+      </div>
+    </article>
+
+  </section>
   <footer class="footer">
     <p>Beyond the Surface © FAMUN 2026 — Explore. Descubra. Transforme.</p>
   </footer>
 
-  <!-- Scanner Modal -->
   <div class="modal-overlay" id="scannerModal">
     <div class="modal-content scanner-modal-content">
       <div class="scanner-header">
@@ -191,15 +580,12 @@
     </div>
   </div>
 
-  <!-- Success Toast -->
   <div class="toast" id="successToast">
     <span class="toast-icon">✅</span>
     <span class="toast-text" id="toastText">Obra registrada com sucesso!</span>
   </div>
 
-  <!-- html5-qrcode scanner library -->
   <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
   <script src="app.js"></script>
 </body>
-
 </html>
