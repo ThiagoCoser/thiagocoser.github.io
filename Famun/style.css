@@ -1,25 +1,25 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
 
 :root {
-  --bg-primary: #0a0a12;
-  --bg-secondary: #12121f;
-  --bg-card: rgba(22, 22, 40, 0.7);
-  --bg-card-hover: rgba(30, 30, 55, 0.85);
-  --glass-border: rgba(255, 255, 255, 0.08);
-  --glass-border-hover: rgba(255, 255, 255, 0.15);
-  --text-primary: #f0f0f5;
-  --text-secondary: #a0a0b8;
-  --text-muted: #6a6a85;
-  --accent-gold: #d4a853;
-  --accent-gold-light: #f0d090;
-  --accent-blue: #4a7cff;
-  --accent-blue-light: #6b9aff;
-  --accent-green: #34d399;
-  --accent-green-dark: #059669;
-  --accent-red: #f87171;
-  --gradient-hero: linear-gradient(135deg, #0a0a12 0%, #1a1a35 50%, #0d0d1a 100%);
-  --gradient-gold: linear-gradient(135deg, #d4a853, #f0d090);
-  --gradient-card: linear-gradient(145deg, rgba(22, 22, 40, 0.8), rgba(12, 12, 25, 0.9));
+  --bg-primary: #ffffff; /* White background */
+  --bg-secondary: #f4f4f9;
+  --bg-card: rgba(255, 255, 255, 0.8); /* Light translucent card */
+  --bg-card-hover: rgba(255, 255, 255, 1);
+  --glass-border: rgba(0, 59, 92, 0.15); /* Dark border for glassmorphism on light bg */
+  --glass-border-hover: rgba(0, 59, 92, 0.3);
+  --text-primary: #003B5C; /* Dark Blue for primary text */
+  --text-secondary: #333333; /* Dark gray for secondary */
+  --text-muted: #666666; /* Gray for muted text */
+  --accent-gold: #F6901E; /* Orange from brand */
+  --accent-gold-light: #ffaa44;
+  --accent-blue: #069DD8; /* Light Blue from brand */
+  --accent-blue-light: #33bbee;
+  --accent-green: #50B748; /* Green from brand */
+  --accent-green-dark: #3a9632;
+  --accent-red: #C32034; /* Red from brand */
+  --gradient-hero: linear-gradient(135deg, #ffffff 0%, #f4f4f9 100%);
+  --gradient-gold: linear-gradient(135deg, #CD3A95, #F6901E); /* Pink to Orange */
+  --gradient-card: linear-gradient(145deg, rgba(255, 255, 255, 0.9), rgba(240, 240, 245, 0.95));
   --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.4);
   --shadow-card-hover: 0 16px 48px rgba(0, 0, 0, 0.6);
   --shadow-glow: 0 0 40px rgba(212, 168, 83, 0.15);
@@ -43,7 +43,7 @@ html {
 }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
   background: var(--bg-primary);
   color: var(--text-primary);
   min-height: 100vh;
@@ -147,13 +147,15 @@ body {
   50% { opacity: 0.5; transform: scale(0.8); }
 }
 
+.hero-logo {
+  max-width: 300px;
+  width: 90%;
+  margin: 1rem auto 1.5rem;
+  display: block;
+  filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.2));
+}
+
 .hero h1 {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-size: clamp(2.2rem, 5vw, 3.8rem);
-  font-weight: 700;
-  line-height: 1.15;
-  margin-bottom: 8px;
-  background: var(--gradient-gold);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
