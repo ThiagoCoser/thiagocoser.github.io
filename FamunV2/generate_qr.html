@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Gerador de QR Codes — Beyond the Surface</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #1a1a2e;
+      color: #f0f0f5;
+      padding: 40px;
+      text-align: center;
+    }
+    h1 { color: #d4a853; margin-bottom: 8px; }
+    p.sub { color: #a0a0b8; margin-bottom: 40px; }
+    .qr-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 40px;
+      justify-content: center;
+    }
+    .qr-item {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      padding: 30px;
+      width: 320px;
+    }
+    .qr-item h2 { font-size: 1.1rem; margin-bottom: 4px; color: #d4a853; }
+    .qr-item h3 { font-size: 0.9rem; font-weight: 400; color: #a0a0b8; margin-bottom: 16px; }
+    .qr-item canvas {
+      border-radius: 8px;
+      background: white;
+      padding: 16px;
+    }
+    .qr-item .url {
+      margin-top: 12px;
+      font-size: 0.75rem;
+      color: #6a6a85;
+      word-break: break-all;
+    }
+    .download-btn {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 8px 20px;
+      background: #d4a853;
+      color: #0a0a12;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      border: none;
+    }
+    .download-btn:hover { background: #f0d090; }
+    .instructions {
+      max-width: 700px;
+      margin: 40px auto 0;
+      padding: 24px;
+      background: rgba(74, 124, 255, 0.08);
+      border: 1px solid rgba(74, 124, 255, 0.2);
+      border-radius: 12px;
+      color: #6b9aff;
+      font-size: 0.85rem;
+      line-height: 1.6;
+      text-align: left;
+    }
+    .instructions strong { color: #a0c0ff; }
+  </style>
+</head>
+<body>
+
+  <h1>🔲 Gerador de QR Codes</h1>
+  <p class="sub">Beyond the Surface — FAMUN 2026</p>
+
+  <div class="qr-grid" id="qrGrid"></div>
+
+  <div class="instructions">
+    <strong>⚠️ Importante — URL Base:</strong><br>
+    Os QR codes acima usam URLs relativas. Quando o site for hospedado (ex: GitHub Pages, Vercel, Netlify),
+    edite a variável <code>BASE_URL</code> no código-fonte desta página para incluir a URL completa do site.
+    <br><br>
+    <strong>Exemplo:</strong> <code>https://seusite.com/ar.html?obra=A</code>
+    <br><br>
+    <strong>Para usar:</strong> Clique "Download PNG" em cada QR code. Os arquivos serão salvos e devem ser 
+    colocados na pasta <code>Assets/</code> do projeto com os nomes <code>qr_A.png</code>, <code>qr_B.png</code>, <code>qr_C.png</code>.
+  </div>
+
+  <!-- QRCode.js library from CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+  
+  <script>
+    // ===== CONFIGURATION =====
+    const obras = [
+      { id: 'A', title: 'Sphere Within Sphere', artist: 'Arnaldo Pomodoro', code: 'FAMUN_A_123' },
+      { id: 'B', title: 'Non Violence', artist: 'Carl Fredrik Reuterswärd', code: 'FAMUN_B_456' },
+      { id: 'C', title: 'Busto de Mahatma Gandhi', artist: 'Ram Sutar', code: 'FAMUN_C_789' }
+    ];
+
+    const grid = document.getElementById('qrGrid');
+
+    obras.forEach(obra => {
+      const item = document.createElement('div');
+      item.className = 'qr-item';
+
+      item.innerHTML = `
+        <h2>Obra ${obra.id}</h2>
+        <h3>${obra.title}</h3>
+        <div id="qr-container-${obra.id}"></div>
+        <p class="url">Código: <strong>${obra.code}</strong></p>
+      `;
+
+      grid.appendChild(item);
+
+      // Generate QR code with simple text
+      const qrContainer = item.querySelector(`#qr-container-${obra.id}`);
+      
+      new QRCode(qrContainer, {
+        text: obra.code,
+        width: 256,
+        height: 256,
+        colorDark: '#000000',
+        colorLight: '#ffffff',
+        correctLevel: QRCode.CorrectLevel.H
+      });
+
+      // Add download button after a small delay (QR needs to render)
+      setTimeout(() => {
+        const canvas = qrContainer.querySelector('canvas');
+        if (canvas) {
+          const btn = document.createElement('button');
+          btn.className = 'download-btn';
+          btn.textContent = `⬇ Download qr_${obra.id}.png`;
+          btn.onclick = () => {
+            const link = document.createElement('a');
+            link.download = `qr_${obra.id}.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+          };
+          item.appendChild(btn);
+        }
+      }, 500);
+    });
+  </script>
+</body>
+</html>

@@ -22,7 +22,7 @@
   --gradient-card: linear-gradient(145deg, rgba(255, 255, 255, 0.9), rgba(240, 240, 245, 0.95));
   --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.4);
   --shadow-card-hover: 0 16px 48px rgba(0, 0, 0, 0.6);
-  --shadow-glow: 0 0 40px rgba(246, 144, 30, 0.15);
+  --shadow-glow: 0 0 40px rgba(212, 168, 83, 0.15);
   --radius-sm: 8px;
   --radius-md: 16px;
   --radius-lg: 24px;
@@ -74,7 +74,7 @@ body {
 .bg-animation .orb:nth-child(1) {
   width: 400px;
   height: 400px;
-  background: radial-gradient(circle, rgba(6, 157, 216, 0.15), transparent);
+  background: radial-gradient(circle, rgba(74, 124, 255, 0.3), transparent);
   top: -100px;
   right: -100px;
   animation-duration: 25s;
@@ -83,7 +83,7 @@ body {
 .bg-animation .orb:nth-child(2) {
   width: 300px;
   height: 300px;
-  background: radial-gradient(circle, rgba(205, 58, 149, 0.15), transparent);
+  background: radial-gradient(circle, rgba(212, 168, 83, 0.25), transparent);
   bottom: -50px;
   left: -50px;
   animation-duration: 20s;
@@ -93,7 +93,7 @@ body {
 .bg-animation .orb:nth-child(3) {
   width: 250px;
   height: 250px;
-  background: radial-gradient(circle, rgba(246, 144, 30, 0.15), transparent);
+  background: radial-gradient(circle, rgba(52, 211, 153, 0.2), transparent);
   top: 50%;
   left: 50%;
   animation-duration: 30s;
@@ -123,8 +123,8 @@ body {
   gap: 8px;
   padding: 8px 20px;
   border-radius: 100px;
-  background: rgba(246, 144, 30, 0.1);
-  border: 1px solid rgba(205, 58, 149, 0.15);
+  background: rgba(212, 168, 83, 0.1);
+  border: 1px solid rgba(212, 168, 83, 0.25);
   color: var(--accent-gold);
   font-size: 0.8rem;
   font-weight: 600;
@@ -148,16 +148,11 @@ body {
 }
 
 .hero-logo {
+  max-width: 300px;
   width: 90%;
-  max-width: 200px; /* Responsivo e controlado */
   margin: 1rem auto 1.5rem;
   display: block;
-}
-
-@media (min-width: 768px) {
-  .hero-logo {
-    max-width: 250px; /* Não explode no PC */
-  }
+  filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.2));
 }
 
 .hero h1 {
@@ -307,11 +302,11 @@ body {
 }
 
 .obra-card.found {
-  border-color: rgba(80, 183, 72, 0.3);
+  border-color: rgba(52, 211, 153, 0.3);
 }
 
 .obra-card.found:hover {
-  box-shadow: 0 16px 48px rgba(80, 183, 72, 0.1);
+  box-shadow: 0 16px 48px rgba(52, 211, 153, 0.1);
 }
 
 .obra-image-container {
@@ -358,14 +353,14 @@ body {
 }
 
 .obra-status.not-found {
-  background: rgba(195, 32, 52, 0.15);
-  border: 1px solid rgba(195, 32, 52, 0.3);
+  background: rgba(248, 113, 113, 0.15);
+  border: 1px solid rgba(248, 113, 113, 0.3);
   color: var(--accent-red);
 }
 
 .obra-status.found-badge {
-  background: rgba(80, 183, 72, 0.15);
-  border: 1px solid rgba(80, 183, 72, 0.3);
+  background: rgba(52, 211, 153, 0.15);
+  border: 1px solid rgba(52, 211, 153, 0.3);
   color: var(--accent-green);
 }
 
@@ -444,7 +439,7 @@ body {
 
 .btn-scan.btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(246, 144, 30, 0.3);
+  box-shadow: 0 8px 24px rgba(212, 168, 83, 0.3);
 }
 
 .btn-scan.btn-secondary {
@@ -638,8 +633,8 @@ body {
   margin-top: 16px;
   padding: 12px 24px;
   border-radius: var(--radius-sm);
-  background: rgba(80, 183, 72, 0.1);
-  border: 1px solid rgba(80, 183, 72, 0.25);
+  background: rgba(52, 211, 153, 0.1);
+  border: 1px solid rgba(52, 211, 153, 0.25);
   color: var(--accent-green);
   font-size: 0.9rem;
   font-weight: 500;
@@ -726,20 +721,20 @@ body {
 }
 
 .scanner-feedback.success {
-  background: rgba(80, 183, 72, 0.15);
-  border: 1px solid rgba(80, 183, 72, 0.3);
+  background: rgba(52, 211, 153, 0.15);
+  border: 1px solid rgba(52, 211, 153, 0.3);
   color: var(--accent-green);
 }
 
 .scanner-feedback.warning {
-  background: rgba(246, 144, 30, 0.15);
-  border: 1px solid rgba(246, 144, 30, 0.3);
+  background: rgba(212, 168, 83, 0.15);
+  border: 1px solid rgba(212, 168, 83, 0.3);
   color: var(--accent-gold);
 }
 
 .scanner-feedback.error {
-  background: rgba(195, 32, 52, 0.15);
-  border: 1px solid rgba(195, 32, 52, 0.3);
+  background: rgba(248, 113, 113, 0.15);
+  border: 1px solid rgba(248, 113, 113, 0.3);
   color: var(--accent-red);
 }
 
@@ -750,7 +745,7 @@ body {
   left: 50%;
   transform: translateX(-50%) translateY(100px);
   background: var(--gradient-card);
-  border: 1px solid rgba(80, 183, 72, 0.4);
+  border: 1px solid rgba(52, 211, 153, 0.4);
   padding: 16px 24px;
   border-radius: 100px;
   display: flex;
