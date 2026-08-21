@@ -1,6 +1,16 @@
 // ===== Beyond the Surface — Main App Logic =====
 
 const STORAGE_KEY = 'obras_found';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxSRH152hGBz_nPXhxO4Or27pdiHuKx5ipCPE7Ijvm5aybquR5ns9NCSzS3th3nVCMa/exec';
+
+function getUserId() {
+  let userId = localStorage.getItem('famun_user_id');
+  if (!userId) {
+    userId = 'user_' + Math.random().toString(36).substring(2, 8);
+    localStorage.setItem('famun_user_id', userId);
+  }
+  return userId;
+}
 
 // Each obra has ONE specific QR code. Only that exact code unlocks it.
 const QR_CODE_MAP = {
@@ -167,8 +177,18 @@ function onQRCodeScanned(decodedText, expectedObraId) {
   if (scannedObraId === expectedObraId) {
     feedback.innerHTML = '✅ Obra encontrada!';
     feedback.className = 'scanner-feedback success';
+    
+    const alreadyFound = getFoundObras()[expectedObraId];
+    
     markObraFound(expectedObraId);
     stopScanner();
+    
+    if (!alreadyFound) {
+      const uid = getUserId();
+      const url = `${SCRIPT_URL}?userId=${uid}&obraId=${expectedObraId}`;
+      fetch(url, { mode: 'no-cors' }).catch(err => console.error(err));
+    }
+
     setTimeout(() => {
       closeScanner();
       showToast(`${obrasData[expectedObraId].title} registrada!`);
