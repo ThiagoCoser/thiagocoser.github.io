@@ -346,6 +346,7 @@ body {
 
 /* Status Badge */
 .obra-status {
+  display: none !important;
   position: absolute;
   top: 16px;
   right: 16px;
@@ -450,6 +451,10 @@ body {
 .btn-scan.btn-primary:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 24px rgba(6, 157, 216, 0.3);
+}
+
+.obra-card.found .btn-scan {
+  display: none !important;
 }
 
 .btn-scan.btn-secondary {
