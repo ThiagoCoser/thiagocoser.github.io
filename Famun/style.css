@@ -310,6 +310,10 @@ body {
   border-color: rgba(80, 183, 72, 0.3);
 }
 
+.obra-card.found .obra-image {
+  filter: grayscale(0%);
+}
+
 .obra-card.found:hover {
   box-shadow: 0 16px 48px rgba(80, 183, 72, 0.1);
 }
@@ -325,7 +329,8 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform var(--transition-smooth);
+  filter: grayscale(100%);
+  transition: transform var(--transition-smooth), filter var(--transition-smooth);
 }
 
 .obra-card:hover .obra-image {
@@ -438,13 +443,13 @@ body {
 }
 
 .btn-scan.btn-primary {
-  background: var(--gradient-gold);
-  color: #0a0a12;
+  background: var(--accent-blue);
+  color: #ffffff;
 }
 
 .btn-scan.btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(246, 144, 30, 0.3);
+  box-shadow: 0 8px 24px rgba(6, 157, 216, 0.3);
 }
 
 .btn-scan.btn-secondary {
