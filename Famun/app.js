@@ -8,6 +8,8 @@ function getUserId() {
   if (!userId) {
     userId = 'user_' + Math.random().toString(36).substring(2, 8);
     localStorage.setItem('famun_user_id', userId);
+    // Registra visita nova na planilha (cria a linha do usuário)
+    fetch(`${SCRIPT_URL}?userId=${userId}&obraId=VISIT`, { mode: 'no-cors' }).catch(() => {});
   }
   return userId;
 }
