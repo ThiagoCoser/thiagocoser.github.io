@@ -1,7 +1,7 @@
 // ===== Beyond the Surface — Main App Logic =====
 
 const STORAGE_KEY = 'obras_found';
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyzmm31D_iXbdTvoLTnJ9ZQs3rvslfVLdLswc1dREd_H03BnBDgmEJjd-_wa8m73Mkr/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyMfxJk_DvjOfukm4BvoqOJZrnSnpQvxQVFJUEbuxqGqmm7hmneGsXwEoe1n9g6ukDM/exec';
 
 function getUserId() {
   let userId = localStorage.getItem('famun_user_id');
