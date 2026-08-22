@@ -105,6 +105,11 @@ function updateUI() {
   const progressBar = document.getElementById('progressBar');
   if (progressCount) progressCount.textContent = `${foundCount} / ${TOTAL_OBRAS}`;
   if (progressBar) progressBar.style.width = `${(foundCount / TOTAL_OBRAS) * 100}%`;
+
+  const displayUserId = document.getElementById('displayUserId');
+  if (displayUserId) {
+    displayUserId.textContent = getUserId().replace('user_', '').toUpperCase();
+  }
 }
 
 let html5QrCode = null;
