@@ -6,10 +6,14 @@ const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyWBJkKjL83dmrHCukDd
 function getUserId() {
   let userId = localStorage.getItem('famun_user_id');
   if (!userId) {
-    userId = 'user_' + Math.random().toString(36).substring(2, 8);
+    userId = Math.random().toString(36).substring(2, 8).toUpperCase();
     localStorage.setItem('famun_user_id', userId);
     // Registra visita nova na planilha (cria a linha do usuário)
     fetch(`${SCRIPT_URL}?userId=${userId}&obraId=VISIT`, { mode: 'no-cors' }).catch(() => {});
+  } else if (userId.startsWith('user_')) {
+    // Migra IDs antigos que ainda tenham o prefixo 'user_'
+    userId = userId.replace('user_', '').toUpperCase();
+    localStorage.setItem('famun_user_id', userId);
   }
   return userId;
 }
@@ -108,7 +112,7 @@ function updateUI() {
 
   const displayUserId = document.getElementById('displayUserId');
   if (displayUserId) {
-    displayUserId.textContent = getUserId().replace('user_', '').toUpperCase();
+    displayUserId.textContent = getUserId();
   }
 }
 
