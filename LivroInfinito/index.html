@@ -375,24 +375,72 @@
     <div id="info-modal">
         <div id="info-content">
             <button id="info-close">&times;</button>
-            <h2>O Livro de Areia — Biblioteca Infinita</h2>
-            
-            <h3>Sobre a Obra de Borges</h3>
-            <p>Este projeto é uma instalação artística interativa inspirada no conto homônimo de Jorge Luis Borges, <em>O Livro de Areia</em> (1975). Na ficção de Borges, o protagonista adquire um livro sagrado sem início nem fim, cujas páginas de areia brotam incessantemente, tornando impossível retornar a uma página já lida. O livro funciona como uma metáfora sobre o infinito, a memória humana e o acaso.</p>
-            
-            <h3>Funcionamento Técnico</h3>
-            <p>A experiência une presença física e fluxos gerativos digitais em tempo real:</p>
-            <ul>
-                <li><strong>Retrato de Areia:</strong> A câmera do usuário capta seu rosto em tempo real e o canvas processa a imagem, convertendo os níveis de brilho em partículas de caracteres que vibram como grãos de areia.</li>
-                <li><strong>Textos Generativos:</strong> A cada virar de página, trechos literários razoáveis de livros diversos são buscados dinamicamente sem repetição, alimentando os blocos de leitura do códex.</li>
-                <li><strong>Imagens de Arte Clássica:</strong> Obras históricas de domínio público são carregadas e servem de base tonal para o preenchimento semântico da areia.</li>
-            </ul>
-            
+            <h2>O Livro Infinito</h2>
+
+            <h3>Sobre o projeto</h3>
+            <p>Esta obra foi realizada para a disciplina V204 - Laboratório IV, oferecida no instituto de Artes da
+                Universidade
+                Estadual de Campinas, no segundo semestre de 2026, com o nome, Impressões gráficas: considerações sobre
+                o tempo e a
+                memória na produção de livros de artista e livros-objetos, ministrada pela docente Luise Weiss com a
+                professora
+                convidada Fabiana Grassano.</p>
+
+            <h3>Obra</h3>
+
+            <p>
+                Este projeto é uma instalação artística interativa inspirada no conto de Jorge Luis Borges, O Livro de
+                Areia, de 1975.
+                Na ficção de Borges, o protagonista adquire um livro sagrado sem início nem fim, cujas páginas de areia
+                brotam
+                incessantemente, tornando impossível retornar a uma página já lida. O livro funciona como uma metáfora
+                sobre o infinito,
+                a memória humana e o acaso.
+
+                A experiência une presença física e fluxos gerativos digitais em tempo real, gerando páginas únicas a
+                cada visita.
+                Existe uma espécie de retrato de areia, no qual a câmera do usuário capta seu rosto em tempo real e
+                aplica um
+                processamento na imagem, convertendo os níveis de brilho em partículas de caracteres que vibram como
+                grãos de areia.
+
+                Textos generativos são criados em blocos a cada virar de página, trechos literários de livros aleatórios
+                são buscados em
+                tempo real, dinamicamente e sem repetição, criando uma sensação de vertigem infinita descrita no conto.
+
+                Imagens de Arte de domínio público são carregadas contribuindo para a página única.
+
+
+
+            </p>
+
             <h3>APIs Utilizadas</h3>
-            <ul>
-                <li><strong>Google Books API & Open Library API:</strong> Fontes dinâmicas de textos, descrições e parágrafos literários que garantem a diversidade verbal.</li>
-                <li><strong>Art Institute of Chicago & Metropolitan Museum of Art APIs:</strong> Repositórios abertos que fornecem desenhos, gravuras e pinturas clássicas em tempo real.</li>
-            </ul>
+            <p>API: Google Books API & Open Library API
+                API: Art Institute of Chicago & Metropolitan Museum of Art
+            </p>
+
+
+            </p>
+
+            <h3>Referências</h3>
+            <p></p>
+            BORGES, Jorge Luis. O livro de areia. Tradução de Davi Arrigucci Jr. São Paulo: Companhia das Letras,
+            2009.
+            <p></p>
+            CARRIÓN, Ulises. A nova arte de fazer livros. Tradução de Amir Brito Cadôr. Coordenação editorial de
+            Fernando Pedro da
+            Silva e Marília Andrés Ribeiro. Belo Horizonte: C/Arte, 2011.
+
+            <p></p>
+            VALE, Paulo Pires do. Tarefas infinitas: quando a arte e o livro se ilimitam. Lisboa: Fundação Calouste
+            Gulbenkian,
+            2012.
+
+
+
+
+
+
         </div>
     </div>
 
@@ -440,37 +488,25 @@
         const usedExcerpts = new Set();
         const usedImageIds = new Set();
 
-        // Banco massivo de termos para busca de livros na biblioteca infinita
+        // Banco de termos gerais e cotidianos para busca de livros aleatórios (diversas áreas e temas)
         const sementesDeBusca = [
-            // Temas borgianos e metafísicos
-            "poesia", "tempo", "labirinto", "espelho", "esquecimento", "areia", "universo",
-            "babel", "infinito", "sombra", "memoria", "noite", "estrela", "silêncio",
-            "ruínas", "sonho", "mar", "vento", "escuridão", "cidade", "fantasma",
-            "filosofia", "história", "arte", "mistério", "alquimia", "fábulas",
-            "literatura", "drama", "ensaio", "antologia", "verso", "céu",
-            // Natureza e cosmos
-            "floresta", "montanha", "rio", "oceano", "lua", "sol", "cometa",
-            "nuvem", "trovão", "relâmpago", "aurora", "crepúsculo", "abismo",
-            "deserto", "ilha", "vulcão", "cristal", "pedra", "raiz", "jardim",
-            // Civilização e cultura
-            "templo", "biblioteca", "museu", "catedral", "palácio", "ruína",
-            "manuscrito", "pergaminho", "tinta", "caligrafia", "hieróglifo",
-            "oráculo", "profecia", "mito", "lenda", "epopeia", "tragédia",
-            // Ciência e conhecimento
-            "álgebra", "geometria", "astronomia", "botânica", "anatomia",
-            "cartografia", "navegação", "telescópio", "óptica", "harmonia",
-            // Emoções e estados
-            "melancolia", "nostalgia", "êxtase", "vertigem", "solidão",
-            "angústia", "esperança", "saudade", "encantamento", "assombro",
-            // Objetos e símbolos
-            "relógio", "ampulheta", "chave", "porta", "janela", "escada",
-            "máscara", "coroa", "espada", "cálice", "mapa", "bússola",
-            // Abstrações
-            "destino", "acaso", "eternidade", "paradoxo", "enigma",
-            "metamorfose", "revelação", "travessia", "limiar", "fronteira",
-            // Figuras e arquétipos
-            "viajante", "ermitão", "vidente", "alquimista", "navegador",
-            "escriba", "guardião", "herói", "duplo", "peregrino"
+            "biologia", "viagem", "arquitetura", "cozinha", "astronomia", "floresta",
+            "pintura", "ferrovia", "oceano", "história", "música", "estrada", "geologia",
+            "botânica", "química", "cidade", "passagem", "inverno", "jardim", "máquina",
+            "combate", "teatro", "infância", "memória", "montanha", "estação", "navio",
+            "mercado", "janela", "calçada", "nuvem", "chuva", "rio", "árvore", "pássaro",
+            "vento", "noite", "amanhecer", "trabalho", "estudo", "desenho", "mapa",
+            "deserto", "ponte", "palácio", "ferramenta", "animal", "planta", "metal",
+            "pedra", "fogo", "água", "terra", "ar", "luz", "sombra", "som", "cor",
+            "forma", "passado", "futuro", "presente", "século", "época", "geração",
+            "origem", "destino", "caminho", "fronteira", "encontro", "regresso", "partida",
+            "cotidiano", "espécie", "cultura", "construção", "fruta", "planeta", "sabor",
+            "olhar", "gesto", "voz", "passo", "sono", "despertar", "conversação",
+            "escrever", "ler", "pensar", "saber", "fazer", "dizer", "ver", "ouvir", "sentir",
+            "andar", "correr", "voar", "nadar", "subir", "descer", "entrar", "sair",
+            "quarto", "sala", "varanda", "porta", "parede", "teto", "chão", "mesa",
+            "cadeira", "cama", "armário", "papel", "caneta", "lápis", "copo", "prato",
+            "garfo", "faca", "colher", "panela", "fogão", "geladeira", "leite", "arroz"
         ];
 
         // Termos para busca de obras de arte (Art Institute of Chicago)
@@ -597,71 +633,69 @@
             return result;
         }
 
-        // Banco de trechos literários clássicos (garante textos razoáveis e profundos)
+        // Banco de trechos literários clássicos e cotidianos (garante textos realistas de diversas áreas)
         const trechosClassicos = [
-            "O tempo é a substância de que sou feito. O tempo é um rio que me arrebata, mas eu sou o rio; é um tigre que me devora, mas eu sou o tigre; é um fogo que me consome, mas eu sou o fogo.",
-            "Não há no mundo um único livro que não contenha o seu contrário. O Livro de Areia é um compêndio infinito, cujas páginas não guardam ordem alguma e cujo fim é inacessível.",
-            "Vi o populoso mar, vi a alvorada e a noite, vi as multidões da América, vi uma prateada teia de aranha no centro de uma negra pirâmide, vi um labirinto quebrado.",
-            "Nas cidades invisíveis de Maurília, o viajante é convidado a visitar a cidade e a contemplar ao mesmo tempo antigos cartões-postais que a representam exatamente como era.",
-            "Uma cidade não consiste em suas relações com o passado, mas na medida em que este passado está inscrito em suas linhas, escrito nos cantos das ruas, nas grades das janelas.",
-            "Pensar que estou lendo este livro enquanto o livro me lê, e que ambos somos observados por um olho invisível que se move silencioso através da biblioteca de Babel.",
-            "Como se pudéssemos escolher na vida as páginas que queremos ler e rasgar as outras, sem saber que o livro se refaz a cada noite na prateleira mais alta.",
-            "Sei muito bem que se eu virar as costas a esta estante, as palavras escritas nos volumes fechados começarão a mudar de lugar, recombinando-se num dialeto desconhecido.",
-            "Tenho pensamentos que, se pudesse realizá-los e dar-lhes vida, estragariam a unidade do mundo e fariam os homens duvidar da própria realidade que os cerca.",
-            "A literatura, como toda arte, é uma confissão de que a via não basta. Escrevemos porque a realidade imediata é uma prisão e as palavras são a única fuga.",
-            "Não sou nada. Nunca serei nada. Não posso querer ser nada. À parte isso, tenho em mim todos os sonhos do mundo.",
-            "Era uma vez um rei que queria ver o fim do mundo, e mandou construir uma nau de pedra que navegava sobre as águas como se fosse uma folha leve de outono.",
-            "Se podes olhar, vê. Se podes ver, repara. O destino de cada homem está traçado nas entrelinhas de um manuscrito que ninguém jamais conseguiu terminar.",
-            "Mudam-se os tempos, mudam-se as vontades, muda-se o ser, muda-se a confiança; todo o mundo é composto de mudança, tomando sempre novas qualidades.",
-            "Algum tempo hesitei se devia abrir estas memórias pelo princípio ou pelo fim, isto é, se poria em primeiro lugar o meu nascimento ou a minha morte.",
-            "A cada instante o mundo se dissolve e se reconstrói. A areia que corre na ampulheta não é diferente das palavras que escapam de nossa memória enquanto dormimos.",
-            "Que mistério é esse de existir que de repente nos assalta no meio da tarde e nos faz olhar para as próprias mãos como se fossem objetos estranhos?",
-            "Escrever é procurar entender, é tentar reproduzir o impossível, é sentir que a palavra é apenas uma sombra da coisa que ela tenta nomear.",
-            "O universo (que outros chamam a Biblioteca) compõe-se de um número indefinido, e talvez infinito, de galerias hexagonais, com vastos poços de ventilação no meio.",
-            "Dizer que um livro é infinito não é dizer que ele nunca termina, mas sim que cada vez que o abrimos, as frases mudaram de lugar e a história é outra.",
-            "Tudo o que a linguagem pode expressar já foi escrito nesta biblioteca por alguém, em algum momento do tempo, em algum dos infinitos volumes das estantes.",
-            "A imaginação é uma floresta onde cada árvore é um livro e cada folha é uma palavra que sussurra segredos quando o vento da noite sopra.",
-            "Atrás de cada palavra escrita há uma ausência, um espaço vazio que o leitor deve preencher com suas próprias memórias e esquecimentos.",
-            "Escrevo para me livrar de mim mesmo, para projetar no papel as sombras que habitam o sótão da minha mente e que não me deixam dormir em paz.",
-            "Ao acordar certa manhã de sonhos intranquilos, Gregor Samsa encontrou-se em sua cama metamorfoseado num inseto monstruoso.",
-            "O processo de leitura é uma viagem circular: partimos de nós mesmos, atravessamos oceanos de papel e retornamos ao mesmo lugar, mas já não somos os mesmos."
+            "A manhã estava fria e o vento sobrava forte do norte, trazendo o cheiro das montanhas distantes cobertas de neve.",
+            "Ela serviu o café em duas xícaras de porcelana azul e sentou-se perto da janela, observando o movimento da rua.",
+            "O trem partiu pontualmente às sete horas, deixando para trás uma nuvem de fumaça cinzenta na plataforma vazia da estação.",
+            "Nas profundezas do oceano, a luz do sol nunca chega, e as criaturas marinhas dependem de sua própria luminescência.",
+            "Eles caminharam em silêncio pelas ruas estreitas da cidade velha, ouvindo apenas o som ritmado de seus próprios passos.",
+            "A teoria da relatividade propõe que o espaço e o tempo são interligados em um tecido flexível de quatro dimensões.",
+            "Não há nada mais surpreendente do que observar o comportamento das aves migratórias durante a transição do outono.",
+            "A arquitetura das catedrais se caracteriza pelo uso de arcos de ogiva, abóbadas de nervuras e grandes vitrais coloridos.",
+            "Depois de muitos anos de pesquisa, ele finalmente compreendeu os mecanismos biológicos que ativam o sistema imunológico.",
+            "A receita tradicional exige três ovos frescos, duzentos gramas de farinha de trigo e uma pitada generosa de canela.",
+            "Durante os séculos da Idade Média, as rotas comerciais ligavam diferentes culturas através de longas caravanas terrestres.",
+            "O médico analisou os resultados dos exames com extrema atenção antes de redigir o relatório final da cirurgia.",
+            "As plantas carnívoras atraem suas presas usando combinações de cores vibrantes, néctar doce ou odores atrativos.",
+            "Ela abriu a mala de couro e encontrou um casaco de lã verde, algumas fotografias em sépia e uma chave de metal antigo.",
+            "O rio corria lentamente entre as pedras arredondadas, refletindo a copa das árvores centenárias na superfície da água.",
+            "Em sua juventude, ele trabalhou como aprendiz na pequena oficina mecânica localizada na entrada da zona industrial.",
+            "A lua cheia iluminava a estrada de terra batida que cortava a plantação de eucaliptos sob o céu limpo de inverno.",
+            "O sistema operacional gerencia com precisão os recursos do processador e fornece as interfaces básicas para os aplicativos.",
+            "Ela não respondeu imediatamente; continuou a olhar fixamente para a linha do horizonte onde a chuva começava a cair.",
+            "Os engenheiros projetaram canais artificiais para desviar o curso da água e evitar inundações nas áreas residenciais.",
+            "Ele passou o dia inteiro limpando o porão da casa, organizando velhas caixas de papelão e catalogando antigas ferramentas.",
+            "A pintura a óleo permite misturar os pigmentos diretamente sobre a tela, criando gradientes de luz extremamente suaves.",
+            "A bordo da embarcação de madeira, os pescadores enfrentaram ventos fortes antes de conseguir retornar ao porto seguro.",
+            "Para compreender o comportamento de compra das famílias, os pesquisadores analisaram dados estatísticos do último censo.",
+            "Ela ajustou as luvas de lã para se proteger do frio intenso e continuou sua caminhada pela calçada congelada.",
+            "O novo programa de reflorestamento tem como meta plantar mudas nativas em áreas degradadas nos próximos cinco anos."
         ];
 
-        // GERADOR PROCEDURAL — 14.400+ combinações únicas impossíveis de repetir
+        // GERADOR PROCEDURAL — Sentenças realistas e descritivas de áreas científicas e cotidianas
         function generateProceduralFragment() {
             const sujeitos = [
-                "O viajante cego", "O bibliotecário", "A sombra do escriba",
-                "Um peregrino", "O último cartógrafo", "A vidente",
-                "O alquimista", "Um monge silencioso", "O guardião dos livros",
-                "A tradutora de línguas mortas", "O astrônomo do deserto",
-                "Um navegador sem bússola"
+                "O pesquisador", "A bióloga", "O engenheiro mecânico",
+                "Um grupo de geólogos", "O artista plástico", "A equipe técnica",
+                "O motorista do caminhão", "A especialista em dados", "O arquiteto responsável",
+                "Uma comissão de cientistas", "O assistente de laboratório", "O coordenador do projeto"
             ];
             const verbos = [
-                "encontrou nas margens de um códice", "decifrou num pergaminho esquecido",
-                "contemplou no reflexo de um espelho antigo", "transcreveu à luz de velas",
-                "sussurrou para as paredes da biblioteca", "gravou numa tábua de cera",
-                "leu nas constelações de outono", "descobriu entre folhas apodrecidas",
-                "traduziu de uma língua sem alfabeto", "murmurou ao cruzar o umbral"
+                "observou atentamente", "descreveu detalhadamente",
+                "analisou com precisão", "reconstruiu a estrutura de",
+                "detectou alterações em", "revelou detalhes sobre",
+                "registrou o comportamento de", "acompanhou a evolução de",
+                "mensurou o impacto de", "investigou a causa de"
             ];
             const objetos = [
-                "a fórmula do esquecimento", "o mapa de uma cidade impossível",
-                "as coordenadas de um sonho recorrente", "a genealogia dos espelhos",
-                "o catálogo de todos os silêncios", "a gramática de uma língua extinta",
-                "o teorema da areia infinita", "a partitura do vento noturno",
-                "o inventário das sombras perdidas", "a cartografia do labirinto interior",
-                "o compêndio das estrelas apagadas", "a enciclopédia dos gestos esquecidos"
+                "os fragmentos de rocha basáltica", "as reações químicas sob pressão",
+                "as ligas metálicas expostas ao calor", "as espécies vegetais da encosta",
+                "os padrões de tráfego na avenida principal", "as variações de temperatura no sensor",
+                "as imagens obtidas por satélite", "os resíduos orgânicos coletados no solo",
+                "a resistência dos novos materiais de construção", "o consumo de energia dos equipamentos"
             ];
             const complementos = [
-                "na penúltima prateleira do corredor hexagonal",
-                "sob a poeira de séculos sem nome",
-                "entre as páginas de um livro que se reescreve sozinho",
-                "no instante preciso em que a aurora se dissolvia",
-                "onde o tempo se bifurca em caminhos de areia",
-                "num volume cuja lombada não porta título algum",
-                "no verso de uma página que ninguém jamais virou",
-                "enquanto a tinta ainda tremia sobre o papel",
-                "no silêncio que separa duas palavras sagradas",
-                "na margem de um rio que flui para trás"
+                "durante os meses de inverno rigoroso",
+                "no laboratório da universidade federal",
+                "nas primeiras horas da manhã seguinte",
+                "com o auxílio de lentes de alta resolução",
+                "após analisar as planilhas do experimento",
+                "em um relatório técnico enviado à diretoria",
+                "nas proximidades da zona industrial sul",
+                "durante a realização do teste de esforço",
+                "como parte das atividades de monitoramento",
+                "para garantir a segurança de toda a operação"
             ];
             const s = sujeitos[Math.floor(Math.random() * sujeitos.length)];
             const v = verbos[Math.floor(Math.random() * verbos.length)];
@@ -672,10 +706,10 @@
 
         function cleanHTML(text) {
             return text.replace(/(<([^>]+)>)/gi, "")
-                       .replace(/&quot;/g, '"').replace(/&#39;/g, "'")
-                       .replace(/&amp;/g, "&").replace(/&lt;/g, "<")
-                       .replace(/&gt;/g, ">").replace(/&nbsp;/g, " ")
-                       .replace(/\s+/g, ' ').trim();
+                .replace(/&quot;/g, '"').replace(/&#39;/g, "'")
+                .replace(/&amp;/g, "&").replace(/&lt;/g, "<")
+                .replace(/&gt;/g, ">").replace(/&nbsp;/g, " ")
+                .replace(/\s+/g, ' ').trim();
         }
 
         // BUSCA EXPANDIDA — Google Books + Open Library + Biblioteca Clássica + Gerador Procedural
