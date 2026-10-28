@@ -3,7 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Viewport atualizado para impedir zoom indesejado em celulares -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Interface de Desenho</title>
     <style>
         body {
@@ -13,51 +14,60 @@
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
             margin: 0;
-            padding: 20px;
+            padding: 10px;
+            /* Reduzido um pouco para telas pequenas */
+            overscroll-behavior-y: contain;
+            /* Evita o "puxar para atualizar" nativo dos celulares */
         }
 
         .toolbar {
             display: flex;
-            gap: 15px;
+            gap: 10px;
             align-items: center;
             background: #fff;
-            padding: 10px 20px;
+            padding: 10px;
             border-radius: 8px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
             flex-wrap: wrap;
             justify-content: center;
+            width: 100%;
+            max-width: 800px;
+            box-sizing: border-box;
         }
 
         .canvas-container {
             position: relative;
-            display: inline-block;
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            max-width: 800px;
+            /* Limita ao tamanho máximo no PC */
         }
 
         canvas {
             background-color: #ffffff;
             border: 2px solid #333;
             border-radius: 4px;
-            /* Esconde o cursor padrão do sistema para mostrar apenas a nossa esfera */
             cursor: none;
             touch-action: none;
             display: block;
+            width: 100%;
+            /* Faz o canvas espremer para caber no celular */
+            height: auto;
+            /* Mantém a proporção quadrada (800x800) */
+            aspect-ratio: 1 / 1;
+            box-sizing: border-box;
         }
 
-        /* O PREVIEW DO PINCEL (ESFERA) */
         #cursorPreview {
             position: fixed;
-            /* Fixo para seguir exatamente o X e Y da tela */
             border: 1px solid #000;
             border-radius: 50%;
             pointer-events: none;
-            /* O clique "atravessa" a esfera e acerta o canvas */
             transform: translate(-50%, -50%);
-            /* Centraliza na ponta do mouse */
             display: none;
-            /* Começa invisível até o mouse entrar no canvas */
             z-index: 20;
-            /* Uma sombrinha branca em volta da linha preta para dar contraste quando passar por cima de um desenho preto */
             box-shadow: 0 0 2px rgba(255, 255, 255, 0.9), inset 0 0 2px rgba(255, 255, 255, 0.9);
         }
 
@@ -67,11 +77,11 @@
             left: 50%;
             transform: translate(-50%, -50%);
             background: rgba(255, 255, 255, 0.95);
-            padding: 20px 40px;
+            padding: 20px 30px;
             border-radius: 8px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             font-weight: bold;
-            font-size: 24px;
+            font-size: 20px;
             text-align: center;
             display: none;
             z-index: 10;
@@ -84,6 +94,7 @@
             cursor: pointer;
             font-weight: bold;
             transition: background 0.2s;
+            font-size: 14px;
         }
 
         #btnDraw {
@@ -120,20 +131,18 @@
         <button id="btnDraw" class="active-tool">Lápis</button>
         <button id="btnErase">Borracha</button>
 
-        <label for="brushSize">Tamanho:</label>
-        <!-- VALOR INICIAL AGORA É 25 (METADE) -->
-        <input type="range" id="brushSize" min="1" max="50" value="25">
+        <label for="brushSize" style="font-size:14px; font-weight:bold;">Tam:</label>
+        <input type="range" id="brushSize" min="1" max="50" value="25" style="width: 100px;">
 
         <button id="btnSave">Enviar</button>
     </div>
 
-    <!-- Container engloba o canvas e a mensagem sobreposta -->
     <div class="canvas-container">
+        <!-- O Canvas sempre guarda a resolução interna de 800x800 para o PNG não perder qualidade -->
         <canvas id="drawCanvas" width="800" height="800"></canvas>
         <div id="statusMessage"></div>
     </div>
 
-    <!-- Esfera vazia para seguir o mouse -->
     <div id="cursorPreview"></div>
 
     <script>
@@ -146,18 +155,28 @@
 
         let isDrawing = false;
         let mode = 'draw';
-        let brushSize = 25; // COMEÇA NA METADE
+        let brushSize = 25;
 
         // Pinta o fundo de branco inicialmente
         ctx.fillStyle = "#ffffff";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // --- ATUALIZAR O TAMANHO DO PREVIEW ---
+        // --- ATUALIZAR O TAMANHO DO PREVIEW (AJUSTADO PARA TELAS PEQUENAS) ---
         function updatePreviewSize() {
-            cursorPreview.style.width = brushSize + 'px';
-            cursorPreview.style.height = brushSize + 'px';
+            // Descobre o tamanho que o canvas está aparecendo na tela (ex: 400px no celular)
+            const rect = canvas.getBoundingClientRect();
+            // Calcula a proporção em relação ao tamanho real (800px)
+            const scaleX = rect.width / canvas.width;
+
+            // Encolhe a esfera visualmente para ela representar exatamente a área de pintura
+            const visualSize = brushSize * scaleX;
+            cursorPreview.style.width = visualSize + 'px';
+            cursorPreview.style.height = visualSize + 'px';
         }
-        updatePreviewSize(); // Chama ao abrir para configurar o tamanho inicial (25px)
+
+        updatePreviewSize();
+        // Se a pessoa virar o celular, reajusta a bolinha
+        window.addEventListener('resize', updatePreviewSize);
 
         // Controles das ferramentas
         const btnDraw = document.getElementById('btnDraw');
@@ -166,7 +185,7 @@
 
         sliderSize.addEventListener('input', (e) => {
             brushSize = e.target.value;
-            updatePreviewSize(); // Cresce ou diminui a esfera dinamicamente
+            updatePreviewSize();
         });
 
         btnDraw.addEventListener('click', () => {
@@ -181,20 +200,25 @@
             btnDraw.classList.remove('active-tool');
         });
 
-        // Lógica de coordenadas para o Desenho E para o Preview
+        // Lógica de coordenadas escalonadas para responsividade
         function getMousePos(evt) {
             const rect = canvas.getBoundingClientRect();
             const clientX = evt.clientX || (evt.touches && evt.touches[0].clientX);
             const clientY = evt.clientY || (evt.touches && evt.touches[0].clientY);
+
+            // A mágica acontece aqui: Converte o pixel clicado na tela minúscula
+            // do celular para a coordenada real do quadro 800x800
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+
             return {
-                x: clientX - rect.left,
-                y: clientY - rect.top,
-                screenX: clientX, // Usado para mover a div fixa do preview
+                x: (clientX - rect.left) * scaleX,
+                y: (clientY - rect.top) * scaleY,
+                screenX: clientX,
                 screenY: clientY
             };
         }
 
-        // --- ATUALIZAR POSIÇÃO DO PREVIEW ---
         function updateCursorPreview(pos) {
             if (pos.screenX && pos.screenY) {
                 cursorPreview.style.left = pos.screenX + 'px';
@@ -208,7 +232,6 @@
             const pos = getMousePos(e);
             updateCursorPreview(pos);
 
-            // Permite fazer um "ponto" ao dar só um clique
             ctx.lineWidth = brushSize;
             ctx.lineCap = 'round';
             ctx.strokeStyle = mode === 'draw' ? '#000000' : '#ffffff';
@@ -226,7 +249,7 @@
         const draw = (e) => {
             e.preventDefault();
             const pos = getMousePos(e);
-            updateCursorPreview(pos); // A esfera segue o mouse mesmo sem desenhar
+            updateCursorPreview(pos);
 
             if (!isDrawing) return;
 
@@ -240,7 +263,6 @@
             ctx.moveTo(pos.x, pos.y);
         };
 
-        // Eventos de Mouse
         canvas.addEventListener('mouseenter', () => cursorPreview.style.display = 'block');
         canvas.addEventListener('mouseleave', () => {
             cursorPreview.style.display = 'none';
@@ -250,7 +272,6 @@
         canvas.addEventListener('mouseup', stopDrawing);
         canvas.addEventListener('mousemove', draw);
 
-        // Eventos de Touch
         canvas.addEventListener('touchstart', (e) => {
             cursorPreview.style.display = 'block';
             startDrawing(e);
@@ -267,14 +288,10 @@
             const base64Data = dataURL.split(',')[1];
             const timestamp = new Date().getTime();
 
-            // Limpa o canvas IMEDIATAMENTE
             ctx.fillStyle = "#ffffff";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // Esconde temporariamente a bolinha do pincel durante o envio
             cursorPreview.style.display = 'none';
-
-            // Mostra o feedback de envio centralizado
             statusMsg.innerText = "Enviando...";
             statusMsg.style.color = "#333";
             statusMsg.style.display = "block";
