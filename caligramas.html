@@ -2,10 +2,12 @@
 <html lang="pt-BR">
 
 <head>
+       
     <meta charset="UTF-8">
+       
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Canvas de Desenho</title>
-    <style>
+        <title>Canvas de Desenho</title>
+        <style>
         body {
             display: flex;
             flex-direction: column;
@@ -14,17 +16,6 @@
             background-color: #f4f4f4;
             margin: 0;
             padding: 20px;
-            transition: opacity 0.3s ease;
-        }
-
-        /* Estilo aplicado quando a interface estiver desativada */
-        body.interface-disabled .toolbar,
-        body.interface-disabled canvas,
-        body.interface-disabled h2 {
-            opacity: 0.3;
-            pointer-events: none;
-            /* Impede qualquer clique ou interação */
-            user-select: none;
         }
 
         .toolbar {
@@ -38,7 +29,6 @@
             margin-bottom: 20px;
             flex-wrap: wrap;
             justify-content: center;
-            transition: opacity 0.3s ease;
         }
 
         canvas {
@@ -48,7 +38,6 @@
             cursor: crosshair;
             touch-action: none;
             /* Previne scroll ao desenhar no celular */
-            transition: opacity 0.3s ease;
         }
 
         button {
@@ -91,58 +80,39 @@
     </style>
 </head>
 
-<body class="interface-disabled">
+<body>
 
-    <h2>Crie seu Desenho</h2>
+        <h2>Crie seu Desenho</h2>
 
-    <div class="toolbar">
-        <button id="btnDraw" class="active-tool">Lápis (Preto)</button>
-        <button id="btnErase">Borracha</button>
+        <div class="toolbar">
+                <button id="btnDraw" class="active-tool">Lápis (Preto)</button>
+                <button id="btnErase">Borracha</button>
 
-        <label for="brushSize">Tamanho:</label>
-        <input type="range" id="brushSize" min="1" max="50" value="5">
+                <label for="brushSize">Tamanho:</label>
+                <input type="range" id="brushSize" min="1" max="50" value="5">
 
-        <button id="btnSave">Salvar no Drive</button>
-    </div>
+                <button id="btnSave">Salvar no Drive</button>
+            </div>
 
-    <canvas id="drawCanvas" width="800" height="600"></canvas>
+        <canvas id="drawCanvas" width="800" height="600"></canvas>
 
-    <div id="statusMessage">Pressione "I" no teclado para ativar a interface</div>
+        <div id="statusMessage"></div>
 
+       
     <script>
         // COLOQUE A URL DO SEU GOOGLE APPS SCRIPT AQUI
         const scriptURL = 'https://script.google.com/macros/s/AKfycbwLX8BehK4UtrriwMfk4nM82FbBirwv6z2zSVr1UBqiqTyiP_j-Pgs7viYSKlEmF1jg/exec';
 
         const canvas = document.getElementById('drawCanvas');
         const ctx = canvas.getContext('2d');
-        const statusMsg = document.getElementById('statusMessage');
 
-        let isUIActive = false; // Começa DESATIVADA
         let isDrawing = false;
         let mode = 'draw'; // 'draw' ou 'erase'
         let brushSize = 5;
 
-        // Preenche o fundo com branco
+        // Preenche o fundo com branco (se for transparente, vira preto ao salvar)
         ctx.fillStyle = "#ffffff";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        // --- ATIVAÇÃO/DESATIVAÇÃO VIA TECLA 'I' ---
-        window.addEventListener('keydown', (e) => {
-            if (e.key === 'i' || e.key === 'I') {
-                isUIActive = !isUIActive;
-
-                if (isUIActive) {
-                    document.body.classList.remove('interface-disabled');
-                    statusMsg.innerText = "Interface Ativa";
-                    statusMsg.style.color = "green";
-                    setTimeout(() => { if (statusMsg.innerText === "Interface Ativa") statusMsg.innerText = ""; }, 2000);
-                } else {
-                    document.body.classList.add('interface-disabled');
-                    statusMsg.innerText = "Pressione \"I\" no teclado para ativar a interface";
-                    statusMsg.style.color = "#333";
-                }
-            }
-        });
 
         // Controles de UI
         const btnDraw = document.getElementById('btnDraw');
@@ -166,6 +136,7 @@
         // Funções de Desenho
         function getMousePos(evt) {
             const rect = canvas.getBoundingClientRect();
+            // Suporte para mouse ou touch
             const clientX = evt.clientX || (evt.touches && evt.touches[0].clientX);
             const clientY = evt.clientY || (evt.touches && evt.touches[0].clientY);
             return {
@@ -175,7 +146,6 @@
         }
 
         const startDrawing = (e) => {
-            if (!isUIActive) return; // Trava o desenho se estiver desativado
             e.preventDefault();
             isDrawing = true;
             draw(e);
@@ -183,17 +153,18 @@
 
         const stopDrawing = () => {
             isDrawing = false;
-            ctx.beginPath();
+            ctx.beginPath(); // Reseta o caminho para não ligar pontos distantes
         };
 
         const draw = (e) => {
-            if (!isDrawing || !isUIActive) return;
+            if (!isDrawing) return;
             e.preventDefault();
 
             const pos = getMousePos(e);
 
             ctx.lineWidth = brushSize;
             ctx.lineCap = 'round';
+            // Se for borracha, desenha com branco, senão desenha com preto
             ctx.strokeStyle = mode === 'draw' ? '#000000' : '#ffffff';
 
             ctx.lineTo(pos.x, pos.y);
@@ -208,8 +179,62 @@
         canvas.addEventListener('mousemove', draw);
         canvas.addEventListener('mouseout', stopDrawing);
 
-        // Eventos de Touch
+        // Eventos de Touch (Celulares e Tablets)
         canvas.addEventListener('touchstart', startDrawing, { passive: false });
         canvas.addEventListener('touchend', stopDrawing);
-        canvas.addEventListener
-    
+        canvas.addEventListener('touchmove', draw, { passive: false });
+
+        // Lógica de Salvar no Google Drive
+        document.getElementById('btnSave').addEventListener('click', () => {
+            if (scriptURL === 'COLE_A_URL_DO_SEU_WEB_APP_AQUI') {
+                alert("Você precisa configurar a scriptURL no código com a URL gerada pelo Google Apps Script!");
+                return;
+            }
+
+            const status = document.getElementById('statusMessage');
+            status.innerText = "Enviando para o Drive...";
+            status.style.color = "blue";
+
+            // Extrai a imagem base64 do canvas
+            const dataURL = canvas.toDataURL('image/png');
+            const base64Data = dataURL.split(',')[1];
+            const timestamp = new Date().getTime();
+
+            // Usar Content-Type text/plain evita problemas complexos de CORS no fetch
+            fetch(scriptURL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'text/plain;charset=utf-8'
+                },
+                body: JSON.stringify({
+                    image: base64Data,
+                    filename: 'desenho_' + timestamp + '.png'
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        status.innerText = "✓ Desenho salvo com sucesso!";
+                        status.style.color = "green";
+
+                        // Opcional: Limpar a tela após salvar
+                        setTimeout(() => {
+                            ctx.fillStyle = "#ffffff";
+                            ctx.fillRect(0, 0, canvas.width, canvas.height);
+                            status.innerText = "";
+                        }, 3000);
+                    } else {
+                        status.innerText = "Erro ao salvar: " + data.message;
+                        status.style.color = "red";
+                    }
+                })
+                .catch(error => {
+                    console.error("Erro na requisição:", error);
+                    status.innerText = "Erro de conexão ao tentar salvar.";
+                    status.style.color = "red";
+                });
+        });
+    </script>
+</body>
+
+</html>
