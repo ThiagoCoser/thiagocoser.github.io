@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas de Desenho</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .toolbar {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            background: #fff;
+            padding: 10px 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        canvas {
+            background-color: #ffffff;
+            border: 2px solid #333;
+            border-radius: 4px;
+            cursor: crosshair;
+            touch-action: none;
+            /* Previne scroll ao desenhar no celular */
+        }
+
+        button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+
+        #btnDraw {
+            background: #333;
+            color: #fff;
+        }
+
+        #btnErase {
+            background: #ddd;
+            color: #333;
+        }
+
+        #btnSave {
+            background: #4CAF50;
+            color: #fff;
+            font-size: 16px;
+        }
+
+        #btnSave:hover {
+            background: #45a049;
+        }
+
+        .active-tool {
+            box-shadow: 0 0 0 3px #2196F3;
+        }
+
+        #statusMessage {
+            margin-top: 15px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>Crie seu Desenho</h2>
+
+    <div class="toolbar">
+        <button id="btnDraw" class="active-tool">Lápis (Preto)</button>
+        <button id="btnErase">Borracha</button>
+
+        <label for="brushSize">Tamanho:</label>
+        <input type="range" id="brushSize" min="1" max="50" value="5">
+
+        <button id="btnSave">Salvar no Drive</button>
+    </div>
+
+    <canvas id="drawCanvas" width="800" height="600"></canvas>
+
+    <div id="statusMessage"></div>
+
+    <script>
+        // COLOQUE A URL DO SEU GOOGLE APPS SCRIPT AQUI
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbwLX8BehK4UtrriwMfk4nM82FbBirwv6z2zSVr1UBqiqTyiP_j-Pgs7viYSKlEmF1jg/exec';
+
+        const canvas = document.getElementById('drawCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let isDrawing = false;
+        let mode = 'draw'; // 'draw' ou 'erase'
+        let brushSize = 5;
+
+        // Preenche o fundo com branco (se for transparente, vira preto ao salvar)
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Controles de UI
+        const btnDraw = document.getElementById('btnDraw');
+        const btnErase = document.getElementById('btnErase');
+        const sliderSize = document.getElementById('brushSize');
+
+        sliderSize.addEventListener('input', (e) => brushSize = e.target.value);
+
+        btnDraw.addEventListener('click', () => {
+            mode = 'draw';
+            btnDraw.classList.add('active-tool');
+            btnErase.classList.remove('active-tool');
+        });
+
+        btnErase.addEventListener('click', () => {
+            mode = 'erase';
+            btnErase.classList.add('active-tool');
+            btnDraw.classList.remove('active-tool');
+        });
+
+        // Funções de Desenho
+        function getMousePos(evt) {
+            const rect = canvas.getBoundingClientRect();
+            // Suporte para mouse ou touch
+            const clientX = evt.clientX || (evt.touches && evt.touches[0].clientX);
+            const clientY = evt.clientY || (evt.touches && evt.touches[0].clientY);
+            return {
+                x: clientX - rect.left,
+                y: clientY - rect.top
+            };
+        }
+
+        const startDrawing = (e) => {
+            e.preventDefault();
+            isDrawing = true;
+            draw(e);
+        };
+
+        const stopDrawing = () => {
+            isDrawing = false;
+            ctx.beginPath(); // Reseta o caminho para não ligar pontos distantes
+        };
+
+        const draw = (e) => {
+            if (!isDrawing) return;
+            e.preventDefault();
+
+            const pos = getMousePos(e);
+
+            ctx.lineWidth = brushSize;
+            ctx.lineCap = 'round';
+            // Se for borracha, desenha com branco, senão desenha com preto
+            ctx.strokeStyle = mode === 'draw' ? '#000000' : '#ffffff';
+
+            ctx.lineTo(pos.x, pos.y);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(pos.x, pos.y);
+        };
+
+        // Eventos de Mouse
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseout', stopDrawing);
+
+        // Eventos de Touch (Celulares e Tablets)
+        canvas.addEventListener('touchstart', startDrawing, { passive: false });
+        canvas.addEventListener('touchend', stopDrawing);
+        canvas.addEventListener('touchmove', draw, { passive: false });
+
+        // Lógica de Salvar no Google Drive
+        document.getElementById('btnSave').addEventListener('click', () => {
+            if (scriptURL === 'COLE_A_URL_DO_SEU_WEB_APP_AQUI') {
+                alert("Você precisa configurar a scriptURL no código com a URL gerada pelo Google Apps Script!");
+                return;
+            }
+
+            const status = document.getElementById('statusMessage');
+            status.innerText = "Enviando para o Drive...";
+            status.style.color = "blue";
+
+            // Extrai a imagem base64 do canvas
+            const dataURL = canvas.toDataURL('image/png');
+            const base64Data = dataURL.split(',')[1];
+            const timestamp = new Date().getTime();
+
+            // Usar Content-Type text/plain evita problemas complexos de CORS no fetch
+            fetch(scriptURL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'text/plain;charset=utf-8'
+                },
+                body: JSON.stringify({
+                    image: base64Data,
+                    filename: 'desenho_' + timestamp + '.png'
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        status.innerText = "✓ Desenho salvo com sucesso!";
+                        status.style.color = "green";
+
+                        // Opcional: Limpar a tela após salvar
+                        setTimeout(() => {
+                            ctx.fillStyle = "#ffffff";
+                            ctx.fillRect(0, 0, canvas.width, canvas.height);
+                            status.innerText = "";
+                        }, 3000);
+                    } else {
+                        status.innerText = "Erro ao salvar: " + data.message;
+                        status.style.color = "red";
+                    }
+                })
+                .catch(error => {
+                    console.error("Erro na requisição:", error);
+                    status.innerText = "Erro de conexão ao tentar salvar.";
+                    status.style.color = "red";
+                });
+        });
+    </script>
+</body>
+
+</html>
