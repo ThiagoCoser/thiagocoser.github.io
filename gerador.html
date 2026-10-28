@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interface de Desenho</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .toolbar {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            background: #fff;
+            padding: 10px 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .canvas-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        canvas {
+            background-color: #ffffff;
+            border: 2px solid #333;
+            border-radius: 4px;
+            /* Esconde o cursor padrão do sistema para mostrar apenas a nossa esfera */
+            cursor: none;
+            touch-action: none;
+            display: block;
+        }
+
+        /* O PREVIEW DO PINCEL (ESFERA) */
+        #cursorPreview {
+            position: fixed;
+            /* Fixo para seguir exatamente o X e Y da tela */
+            border: 1px solid #000;
+            border-radius: 50%;
+            pointer-events: none;
+            /* O clique "atravessa" a esfera e acerta o canvas */
+            transform: translate(-50%, -50%);
+            /* Centraliza na ponta do mouse */
+            display: none;
+            /* Começa invisível até o mouse entrar no canvas */
+            z-index: 20;
+            /* Uma sombrinha branca em volta da linha preta para dar contraste quando passar por cima de um desenho preto */
+            box-shadow: 0 0 2px rgba(255, 255, 255, 0.9), inset 0 0 2px rgba(255, 255, 255, 0.9);
+        }
+
+        #statusMessage {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            font-weight: bold;
+            font-size: 24px;
+            text-align: center;
+            display: none;
+            z-index: 10;
+        }
+
+        button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+
+        #btnDraw {
+            background: #333;
+            color: #fff;
+        }
+
+        #btnErase {
+            background: #ddd;
+            color: #333;
+        }
+
+        #btnSave {
+            background: #4CAF50;
+            color: #fff;
+            font-size: 16px;
+        }
+
+        #btnSave:hover {
+            background: #45a049;
+        }
+
+        .active-tool {
+            box-shadow: 0 0 0 3px #2196F3;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>Caligrama</h2>
+
+    <div class="toolbar">
+        <button id="btnDraw" class="active-tool">Lápis</button>
+        <button id="btnErase">Borracha</button>
+
+        <label for="brushSize">Tamanho:</label>
+        <!-- VALOR INICIAL AGORA É 25 (METADE) -->
+        <input type="range" id="brushSize" min="1" max="50" value="25">
+
+        <button id="btnSave">Enviar</button>
+    </div>
+
+    <!-- Container engloba o canvas e a mensagem sobreposta -->
+    <div class="canvas-container">
+        <canvas id="drawCanvas" width="800" height="800"></canvas>
+        <div id="statusMessage"></div>
+    </div>
+
+    <!-- Esfera vazia para seguir o mouse -->
+    <div id="cursorPreview"></div>
+
+    <script>
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbxDQgWsR62kCxY7gmI6dawdEKH3Kj9S9XB3VZxcRDfJhEgMk3e1jOr11DNHFJoEkzST/exec';
+
+        const canvas = document.getElementById('drawCanvas');
+        const ctx = canvas.getContext('2d');
+        const statusMsg = document.getElementById('statusMessage');
+        const cursorPreview = document.getElementById('cursorPreview');
+
+        let isDrawing = false;
+        let mode = 'draw';
+        let brushSize = 25; // COMEÇA NA METADE
+
+        // Pinta o fundo de branco inicialmente
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // --- ATUALIZAR O TAMANHO DO PREVIEW ---
+        function updatePreviewSize() {
+            cursorPreview.style.width = brushSize + 'px';
+            cursorPreview.style.height = brushSize + 'px';
+        }
+        updatePreviewSize(); // Chama ao abrir para configurar o tamanho inicial (25px)
+
+        // Controles das ferramentas
+        const btnDraw = document.getElementById('btnDraw');
+        const btnErase = document.getElementById('btnErase');
+        const sliderSize = document.getElementById('brushSize');
+
+        sliderSize.addEventListener('input', (e) => {
+            brushSize = e.target.value;
+            updatePreviewSize(); // Cresce ou diminui a esfera dinamicamente
+        });
+
+        btnDraw.addEventListener('click', () => {
+            mode = 'draw';
+            btnDraw.classList.add('active-tool');
+            btnErase.classList.remove('active-tool');
+        });
+
+        btnErase.addEventListener('click', () => {
+            mode = 'erase';
+            btnErase.classList.add('active-tool');
+            btnDraw.classList.remove('active-tool');
+        });
+
+        // Lógica de coordenadas para o Desenho E para o Preview
+        function getMousePos(evt) {
+            const rect = canvas.getBoundingClientRect();
+            const clientX = evt.clientX || (evt.touches && evt.touches[0].clientX);
+            const clientY = evt.clientY || (evt.touches && evt.touches[0].clientY);
+            return {
+                x: clientX - rect.left,
+                y: clientY - rect.top,
+                screenX: clientX, // Usado para mover a div fixa do preview
+                screenY: clientY
+            };
+        }
+
+        // --- ATUALIZAR POSIÇÃO DO PREVIEW ---
+        function updateCursorPreview(pos) {
+            if (pos.screenX && pos.screenY) {
+                cursorPreview.style.left = pos.screenX + 'px';
+                cursorPreview.style.top = pos.screenY + 'px';
+            }
+        }
+
+        const startDrawing = (e) => {
+            e.preventDefault();
+            isDrawing = true;
+            const pos = getMousePos(e);
+            updateCursorPreview(pos);
+
+            // Permite fazer um "ponto" ao dar só um clique
+            ctx.lineWidth = brushSize;
+            ctx.lineCap = 'round';
+            ctx.strokeStyle = mode === 'draw' ? '#000000' : '#ffffff';
+            ctx.beginPath();
+            ctx.moveTo(pos.x, pos.y);
+            ctx.lineTo(pos.x, pos.y);
+            ctx.stroke();
+        };
+
+        const stopDrawing = () => {
+            isDrawing = false;
+            ctx.beginPath();
+        };
+
+        const draw = (e) => {
+            e.preventDefault();
+            const pos = getMousePos(e);
+            updateCursorPreview(pos); // A esfera segue o mouse mesmo sem desenhar
+
+            if (!isDrawing) return;
+
+            ctx.lineWidth = brushSize;
+            ctx.lineCap = 'round';
+            ctx.strokeStyle = mode === 'draw' ? '#000000' : '#ffffff';
+
+            ctx.lineTo(pos.x, pos.y);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(pos.x, pos.y);
+        };
+
+        // Eventos de Mouse
+        canvas.addEventListener('mouseenter', () => cursorPreview.style.display = 'block');
+        canvas.addEventListener('mouseleave', () => {
+            cursorPreview.style.display = 'none';
+            stopDrawing();
+        });
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mousemove', draw);
+
+        // Eventos de Touch
+        canvas.addEventListener('touchstart', (e) => {
+            cursorPreview.style.display = 'block';
+            startDrawing(e);
+        }, { passive: false });
+        canvas.addEventListener('touchend', () => {
+            cursorPreview.style.display = 'none';
+            stopDrawing();
+        });
+        canvas.addEventListener('touchmove', draw, { passive: false });
+
+        // Enviar imagem para o Google Drive
+        document.getElementById('btnSave').addEventListener('click', () => {
+            const dataURL = canvas.toDataURL('image/png');
+            const base64Data = dataURL.split(',')[1];
+            const timestamp = new Date().getTime();
+
+            // Limpa o canvas IMEDIATAMENTE
+            ctx.fillStyle = "#ffffff";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Esconde temporariamente a bolinha do pincel durante o envio
+            cursorPreview.style.display = 'none';
+
+            // Mostra o feedback de envio centralizado
+            statusMsg.innerText = "Enviando...";
+            statusMsg.style.color = "#333";
+            statusMsg.style.display = "block";
+
+            fetch(scriptURL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify({
+                    image: base64Data,
+                    filename: 'desenho_' + timestamp + '.png'
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        statusMsg.innerText = "✓ Enviado!";
+                        statusMsg.style.color = "green";
+                    } else {
+                        statusMsg.innerText = "Erro ao salvar.";
+                        statusMsg.style.color = "red";
+                    }
+                    setTimeout(() => { statusMsg.style.display = "none"; }, 2500);
+                })
+                .catch(error => {
+                    console.error("Erro na requisição:", error);
+                    statusMsg.innerText = "Erro de conexão.";
+                    statusMsg.style.color = "red";
+                    setTimeout(() => { statusMsg.style.display = "none"; }, 2500);
+                });
+        });
+    </script>
+</body>
+
+</html>
