@@ -3,7 +3,6 @@
 
 <head>
     <meta charset="UTF-8">
-    <!-- Viewport atualizado para impedir zoom indesejado em celulares -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Interface de Desenho</title>
     <style>
@@ -14,10 +13,14 @@
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
             margin: 0;
-            padding: 10px;
-            /* Reduzido um pouco para telas pequenas */
+            /* O padding lateral de 15px garante a "borda" vazia ao redor do celular */
+            padding: 15px 15px 30px 15px;
             overscroll-behavior-y: contain;
-            /* Evita o "puxar para atualizar" nativo dos celulares */
+        }
+
+        h2 {
+            margin-top: 5px;
+            margin-bottom: 15px;
         }
 
         .toolbar {
@@ -32,31 +35,35 @@
             flex-wrap: wrap;
             justify-content: center;
             width: 100%;
-            max-width: 800px;
+            max-width: 600px;
+            /* Barra de ferramentas mais compacta */
             box-sizing: border-box;
         }
 
+        /* O CONTAINER define o tamanho flexível e força o formato quadrado */
         .canvas-container {
             position: relative;
-            display: flex;
-            justify-content: center;
             width: 100%;
             max-width: 800px;
-            /* Limita ao tamanho máximo no PC */
+            /* Trava no tamanho real para quem estiver no PC */
+            aspect-ratio: 1 / 1;
+            /* Força o formato perfeitamente quadrado! */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            /* Sombra elegante */
+            border-radius: 4px;
         }
 
+        /* O CANVAS apenas preenche 100% do quadrado que o container definiu */
         canvas {
             background-color: #ffffff;
             border: 2px solid #333;
             border-radius: 4px;
             cursor: none;
+            /* Esconde cursor do mouse para o nosso preview */
             touch-action: none;
             display: block;
             width: 100%;
-            /* Faz o canvas espremer para caber no celular */
-            height: auto;
-            /* Mantém a proporção quadrada (800x800) */
-            aspect-ratio: 1 / 1;
+            height: 100%;
             box-sizing: border-box;
         }
 
@@ -111,6 +118,8 @@
             background: #4CAF50;
             color: #fff;
             font-size: 16px;
+            width: 100%;
+            max-width: 150px;
         }
 
         #btnSave:hover {
@@ -132,13 +141,14 @@
         <button id="btnErase">Borracha</button>
 
         <label for="brushSize" style="font-size:14px; font-weight:bold;">Tam:</label>
-        <input type="range" id="brushSize" min="1" max="50" value="25" style="width: 100px;">
+        <input type="range" id="brushSize" min="1" max="50" value="25" style="width: 80px;">
 
         <button id="btnSave">Enviar</button>
     </div>
 
+    <!-- O Container Quadrado -->
     <div class="canvas-container">
-        <!-- O Canvas sempre guarda a resolução interna de 800x800 para o PNG não perder qualidade -->
+        <!-- Resolução interna da imagem sempre será 800x800px para o Google Drive -->
         <canvas id="drawCanvas" width="800" height="800"></canvas>
         <div id="statusMessage"></div>
     </div>
@@ -161,21 +171,18 @@
         ctx.fillStyle = "#ffffff";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // --- ATUALIZAR O TAMANHO DO PREVIEW (AJUSTADO PARA TELAS PEQUENAS) ---
+        // --- CALCULA O TAMANHO VISUAL DO PINCEL NO CELULAR ---
         function updatePreviewSize() {
-            // Descobre o tamanho que o canvas está aparecendo na tela (ex: 400px no celular)
             const rect = canvas.getBoundingClientRect();
-            // Calcula a proporção em relação ao tamanho real (800px)
+            // A proporção entre os 800px originais e o tamanho real na tela do celular
             const scaleX = rect.width / canvas.width;
 
-            // Encolhe a esfera visualmente para ela representar exatamente a área de pintura
             const visualSize = brushSize * scaleX;
             cursorPreview.style.width = visualSize + 'px';
             cursorPreview.style.height = visualSize + 'px';
         }
 
         updatePreviewSize();
-        // Se a pessoa virar o celular, reajusta a bolinha
         window.addEventListener('resize', updatePreviewSize);
 
         // Controles das ferramentas
@@ -200,14 +207,12 @@
             btnDraw.classList.remove('active-tool');
         });
 
-        // Lógica de coordenadas escalonadas para responsividade
+        // Converte as coordenadas do toque/mouse para dentro da imagem de 800x800
         function getMousePos(evt) {
             const rect = canvas.getBoundingClientRect();
             const clientX = evt.clientX || (evt.touches && evt.touches[0].clientX);
             const clientY = evt.clientY || (evt.touches && evt.touches[0].clientY);
 
-            // A mágica acontece aqui: Converte o pixel clicado na tela minúscula
-            // do celular para a coordenada real do quadro 800x800
             const scaleX = canvas.width / rect.width;
             const scaleY = canvas.height / rect.height;
 
@@ -263,6 +268,7 @@
             ctx.moveTo(pos.x, pos.y);
         };
 
+        // Eventos
         canvas.addEventListener('mouseenter', () => cursorPreview.style.display = 'block');
         canvas.addEventListener('mouseleave', () => {
             cursorPreview.style.display = 'none';
@@ -288,6 +294,7 @@
             const base64Data = dataURL.split(',')[1];
             const timestamp = new Date().getTime();
 
+            // Limpa imediatamente a tela
             ctx.fillStyle = "#ffffff";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -316,7 +323,7 @@
                     setTimeout(() => { statusMsg.style.display = "none"; }, 2500);
                 })
                 .catch(error => {
-                    console.error("Erro na requisição:", error);
+                    console.error("Erro:", error);
                     statusMsg.innerText = "Erro de conexão.";
                     statusMsg.style.color = "red";
                     setTimeout(() => { statusMsg.style.display = "none"; }, 2500);
