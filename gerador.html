@@ -13,14 +13,32 @@
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
             margin: 0;
-            /* O padding lateral de 15px garante a "borda" vazia ao redor do celular */
-            padding: 15px 15px 30px 15px;
+            padding: 20px 15px;
             overscroll-behavior-y: contain;
+            min-height: 100vh;
+            justify-content: center;
         }
 
-        h2 {
-            margin-top: 5px;
-            margin-bottom: 15px;
+        .canvas-container {
+            position: relative;
+            width: 100%;
+            max-width: 1024px;
+            aspect-ratio: 1 / 1;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+
+        canvas {
+            background-color: #ffffff;
+            border: 2px solid #333;
+            border-radius: 4px;
+            cursor: none;
+            touch-action: none;
+            display: block;
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
         }
 
         .toolbar {
@@ -31,39 +49,10 @@
             padding: 10px;
             border-radius: 8px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
             flex-wrap: wrap;
             justify-content: center;
             width: 100%;
             max-width: 600px;
-            /* Barra de ferramentas mais compacta */
-            box-sizing: border-box;
-        }
-
-        /* O CONTAINER define o tamanho flexível e força o formato quadrado */
-        .canvas-container {
-            position: relative;
-            width: 100%;
-            max-width: 800px;
-            /* Trava no tamanho real para quem estiver no PC */
-            aspect-ratio: 1 / 1;
-            /* Força o formato perfeitamente quadrado! */
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-            /* Sombra elegante */
-            border-radius: 4px;
-        }
-
-        /* O CANVAS apenas preenche 100% do quadrado que o container definiu */
-        canvas {
-            background-color: #ffffff;
-            border: 2px solid #333;
-            border-radius: 4px;
-            cursor: none;
-            /* Esconde cursor do mouse para o nosso preview */
-            touch-action: none;
-            display: block;
-            width: 100%;
-            height: 100%;
             box-sizing: border-box;
         }
 
@@ -134,7 +123,10 @@
 
 <body>
 
-    <h2>Caligrama</h2>
+    <div class="canvas-container">
+        <canvas id="drawCanvas" width="1024" height="1024"></canvas>
+        <div id="statusMessage"></div>
+    </div>
 
     <div class="toolbar">
         <button id="btnDraw" class="active-tool">Lápis</button>
@@ -144,13 +136,6 @@
         <input type="range" id="brushSize" min="1" max="50" value="25" style="width: 80px;">
 
         <button id="btnSave">Enviar</button>
-    </div>
-
-    <!-- O Container Quadrado -->
-    <div class="canvas-container">
-        <!-- Resolução interna da imagem sempre será 800x800px para o Google Drive -->
-        <canvas id="drawCanvas" width="800" height="800"></canvas>
-        <div id="statusMessage"></div>
     </div>
 
     <div id="cursorPreview"></div>
@@ -167,16 +152,18 @@
         let mode = 'draw';
         let brushSize = 25;
 
-        // Pinta o fundo de branco inicialmente
+        // === VARIÁVEIS DO DELAY (LAZY BRUSH) ===
+        const smoothFactor = 0.15; // 0.15 cria um ótimo peso no pincel. Quanto menor, maior o delay.
+        let targetPos = { x: 0, y: 0 }; // Onde o mouse/dedo realmente está
+        let currentPos = { x: 0, y: 0 }; // Onde a tinta do pincel está no momento
+        let lastDrawPos = { x: 0, y: 0 }; // Última posição desenhada
+
         ctx.fillStyle = "#ffffff";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // --- CALCULA O TAMANHO VISUAL DO PINCEL NO CELULAR ---
         function updatePreviewSize() {
             const rect = canvas.getBoundingClientRect();
-            // A proporção entre os 800px originais e o tamanho real na tela do celular
             const scaleX = rect.width / canvas.width;
-
             const visualSize = brushSize * scaleX;
             cursorPreview.style.width = visualSize + 'px';
             cursorPreview.style.height = visualSize + 'px';
@@ -185,7 +172,6 @@
         updatePreviewSize();
         window.addEventListener('resize', updatePreviewSize);
 
-        // Controles das ferramentas
         const btnDraw = document.getElementById('btnDraw');
         const btnErase = document.getElementById('btnErase');
         const sliderSize = document.getElementById('brushSize');
@@ -207,7 +193,6 @@
             btnDraw.classList.remove('active-tool');
         });
 
-        // Converte as coordenadas do toque/mouse para dentro da imagem de 800x800
         function getMousePos(evt) {
             const rect = canvas.getBoundingClientRect();
             const clientX = evt.clientX || (evt.touches && evt.touches[0].clientX);
@@ -231,41 +216,74 @@
             }
         }
 
+        // === LOOP DE ANIMAÇÃO DO PINCEL ===
+        // Isso roda continuamente a 60fps enquanto desenha, fazendo a tinta "alcançar" o mouse
+        function renderLoop() {
+            if (!isDrawing) return;
+
+            // Calcula a distância entre a tinta e o mouse
+            const dx = targetPos.x - currentPos.x;
+            const dy = targetPos.y - currentPos.y;
+
+            // Move a tinta uma porcentagem (smoothFactor) na direção do mouse
+            currentPos.x += dx * smoothFactor;
+            currentPos.y += dy * smoothFactor;
+
+            // Configurações do pincel
+            ctx.lineWidth = brushSize;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.strokeStyle = mode === 'draw' ? '#000000' : '#ffffff';
+
+            // Desenha a linha da última posição até a nova
+            ctx.beginPath();
+            ctx.moveTo(lastDrawPos.x, lastDrawPos.y);
+            ctx.lineTo(currentPos.x, currentPos.y);
+            ctx.stroke();
+
+            // Atualiza a última posição
+            lastDrawPos.x = currentPos.x;
+            lastDrawPos.y = currentPos.y;
+
+            // Continua o loop
+            requestAnimationFrame(renderLoop);
+        }
+
         const startDrawing = (e) => {
             e.preventDefault();
             isDrawing = true;
+
             const pos = getMousePos(e);
             updateCursorPreview(pos);
 
-            ctx.lineWidth = brushSize;
-            ctx.lineCap = 'round';
-            ctx.strokeStyle = mode === 'draw' ? '#000000' : '#ffffff';
+            // Inicia todas as variáveis exatamente onde o usuário clicou
+            targetPos = { x: pos.x, y: pos.y };
+            currentPos = { x: pos.x, y: pos.y };
+            lastDrawPos = { x: pos.x, y: pos.y };
+
+            // Faz uma bolinha inicial no local do clique
+            ctx.fillStyle = mode === 'draw' ? '#000000' : '#ffffff';
             ctx.beginPath();
-            ctx.moveTo(pos.x, pos.y);
-            ctx.lineTo(pos.x, pos.y);
-            ctx.stroke();
+            ctx.arc(currentPos.x, currentPos.y, brushSize / 2, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Dispara o loop de animação
+            requestAnimationFrame(renderLoop);
         };
 
         const stopDrawing = () => {
             isDrawing = false;
-            ctx.beginPath();
         };
 
-        const draw = (e) => {
+        // Agora o evento de movimento APENAS atualiza a posição do alvo (mouse/dedo)
+        // O desenho em si é feito pelo renderLoop gerando o atraso (delay)
+        const updateTarget = (e) => {
             e.preventDefault();
             const pos = getMousePos(e);
             updateCursorPreview(pos);
-
-            if (!isDrawing) return;
-
-            ctx.lineWidth = brushSize;
-            ctx.lineCap = 'round';
-            ctx.strokeStyle = mode === 'draw' ? '#000000' : '#ffffff';
-
-            ctx.lineTo(pos.x, pos.y);
-            ctx.stroke();
-            ctx.beginPath();
-            ctx.moveTo(pos.x, pos.y);
+            if (isDrawing) {
+                targetPos = pos;
+            }
         };
 
         // Eventos
@@ -274,9 +292,10 @@
             cursorPreview.style.display = 'none';
             stopDrawing();
         });
+
         canvas.addEventListener('mousedown', startDrawing);
         canvas.addEventListener('mouseup', stopDrawing);
-        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mousemove', updateTarget); // Apenas atualiza o target
 
         canvas.addEventListener('touchstart', (e) => {
             cursorPreview.style.display = 'block';
@@ -286,7 +305,7 @@
             cursorPreview.style.display = 'none';
             stopDrawing();
         });
-        canvas.addEventListener('touchmove', draw, { passive: false });
+        canvas.addEventListener('touchmove', updateTarget, { passive: false }); // Apenas atualiza o target
 
         // Enviar imagem para o Google Drive
         document.getElementById('btnSave').addEventListener('click', () => {
@@ -294,7 +313,6 @@
             const base64Data = dataURL.split(',')[1];
             const timestamp = new Date().getTime();
 
-            // Limpa imediatamente a tela
             ctx.fillStyle = "#ffffff";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
