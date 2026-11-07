@@ -6,57 +6,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Interface de Desenho</title>
     <style>
-        /* === TRAVAMENTO DE TELA COMPLETA (SEM SCROLL) === */
+        /* === TRAVAMENTO DE TELA E CENTRALIZAÇÃO GERAL === */
         body {
             display: flex;
-            flex-direction: column;
+            justify-content: center;
+            /* Centraliza o bloco inteiro horizontalmente */
             align-items: center;
+            /* Centraliza o bloco inteiro verticalmente */
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
             margin: 0;
             padding: 15px;
             box-sizing: border-box;
-
-            /* Ocupa exatamente 100% da altura da tela visível, sem rolagem */
             width: 100vw;
             height: 100vh;
-            /* Fallback para navegadores mais antigos */
             height: 100dvh;
-            /* Altura dinâmica moderna (ignora barra do Chrome/Safari no mobile) */
             overflow: hidden;
-            /* Remove qualquer possibilidade de scroll */
+            /* Remove rolagem da página */
             overscroll-behavior-y: none;
-            /* Previne o efeito "puxar para recarregar" no celular */
-            gap: 15px;
-            /* Espaço entre a área de desenho e a barra de botões */
         }
 
-        /* Envolve o Canvas e preenche todo o espaço restante da tela de cima para baixo */
-        .canvas-wrapper {
-            flex: 1;
-            /* Pega toda a altura disponível descontando os botões */
-            width: 100%;
-            min-height: 0;
-            /* Essencial para o flexbox permitir que o conteúdo encolha em telas pequenas */
+        /* Envolve tanto o Canvas quanto a Barra de Ferramentas */
+        .app-container {
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            /* Centraliza o quadrado no meio da tela */
+            gap: 15px;
+            /* Espaço exato entre o desenho e a barra de botões */
+            width: 100%;
+            /* Limita o tamanho máximo total, garantindo que o quadrado 1024 não ultrapasse a tela */
+            max-width: 1024px;
+            max-height: 100%;
         }
 
-        /* O CONTAINER agora se ajusta à largura e altura máximas do seu Wrapper */
+        /* O CONTAINER define a área perfeitamente quadrada (1:1) */
         .canvas-container {
             position: relative;
-            /* Força o tamanho 1024x1024, mas manda encolher sem perder a proporção quadrada (1/1) */
-            width: 1024px;
-            height: 1024px;
-            max-width: 100%;
-            max-height: 100%;
+            width: 100%;
+            max-width: 1024px;
+            /* Se a altura da tela for menor que a largura, ele usa a altura como base (vh - espaço das ferramentas) */
+            max-height: calc(100dvh - 100px);
             aspect-ratio: 1 / 1;
-
+            /* Força matematicamente o formato quadrado */
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
             border-radius: 4px;
             background-color: #ffffff;
+
+            /* Dica extra para garantir que não estique errado no flex: */
+            flex-shrink: 1;
         }
 
         canvas {
@@ -65,21 +62,19 @@
             border-radius: 4px;
             cursor: none;
             touch-action: none;
-            /* Impede o scroll ao arrastar o dedo em cima do desenho */
             display: block;
             width: 100%;
             height: 100%;
             box-sizing: border-box;
         }
 
+        /* Barra de Ferramentas (agora fica junto ao desenho) */
         .toolbar {
-            flex-shrink: 0;
-            /* Garante que a barra de botões nunca seja esmagada */
             display: flex;
             gap: 10px;
             align-items: center;
             background: #fff;
-            padding: 12px;
+            padding: 10px 15px;
             border-radius: 8px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             flex-wrap: wrap;
@@ -87,6 +82,8 @@
             width: 100%;
             max-width: 600px;
             box-sizing: border-box;
+            flex-shrink: 0;
+            /* Garante que a barra nunca seja esmagada */
         }
 
         #cursorPreview {
@@ -156,23 +153,24 @@
 
 <body>
 
-    <!-- Novo Wrapper flexível -->
-    <div class="canvas-wrapper">
+    <!-- Um contêiner que une tudo e fica no centro exato da tela -->
+    <div class="app-container">
+
         <div class="canvas-container">
             <canvas id="drawCanvas" width="1024" height="1024"></canvas>
             <div id="statusMessage"></div>
         </div>
-    </div>
 
-    <!-- Barra de ferramentas mantida abaixo -->
-    <div class="toolbar">
-        <button id="btnDraw" class="active-tool">Lápis</button>
-        <button id="btnErase">Borracha</button>
+        <div class="toolbar">
+            <button id="btnDraw" class="active-tool">Lápis</button>
+            <button id="btnErase">Borracha</button>
 
-        <label for="brushSize" style="font-size:14px; font-weight:bold;">Tam:</label>
-        <input type="range" id="brushSize" min="1" max="50" value="25" style="width: 80px;">
+            <label for="brushSize" style="font-size:14px; font-weight:bold;">Tam:</label>
+            <input type="range" id="brushSize" min="1" max="50" value="25" style="width: 80px;">
 
-        <button id="btnSave">Enviar</button>
+            <button id="btnSave">Enviar</button>
+        </div>
+
     </div>
 
     <div id="cursorPreview"></div>
@@ -198,10 +196,12 @@
         ctx.fillStyle = "#ffffff";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // Atualiza a pré-visualização do tamanho do pincel dinamicamente de acordo com o redimensionamento da tela
+        // Função corrigida para lidar perfeitamente com redimensionamentos extremos
         function updatePreviewSize() {
             const rect = canvas.getBoundingClientRect();
+            // A largura em pixels visíveis na tela dividida pela resolução interna real (1024)
             const scaleX = rect.width / canvas.width;
+
             const visualSize = brushSize * scaleX;
             cursorPreview.style.width = visualSize + 'px';
             cursorPreview.style.height = visualSize + 'px';
@@ -236,6 +236,8 @@
             const clientX = evt.clientX || (evt.touches && evt.touches[0].clientX);
             const clientY = evt.clientY || (evt.touches && evt.touches[0].clientY);
 
+            // Escala para transpor a posição da tela (seja qual for o tamanho CSS do momento)
+            // para dentro dos 1024x1024px que estão sendo desenhados na memória
             const scaleX = canvas.width / rect.width;
             const scaleY = canvas.height / rect.height;
 
@@ -303,7 +305,7 @@
         };
 
         const updateTarget = (e) => {
-            e.preventDefault(); // Impede evento de rolagem indesejada ao mover o dedo
+            e.preventDefault();
             const pos = getMousePos(e);
             updateCursorPreview(pos);
             if (isDrawing) {
