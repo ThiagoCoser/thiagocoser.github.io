@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Interface de Desenho</title>
     <style>
+        /* === TRAVAMENTO DE TELA COMPLETA (SEM SCROLL) === */
         body {
             display: flex;
             flex-direction: column;
@@ -13,20 +14,49 @@
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
             margin: 0;
-            padding: 20px 15px;
-            overscroll-behavior-y: contain;
-            min-height: 100vh;
-            justify-content: center;
+            padding: 15px;
+            box-sizing: border-box;
+
+            /* Ocupa exatamente 100% da altura da tela visível, sem rolagem */
+            width: 100vw;
+            height: 100vh;
+            /* Fallback para navegadores mais antigos */
+            height: 100dvh;
+            /* Altura dinâmica moderna (ignora barra do Chrome/Safari no mobile) */
+            overflow: hidden;
+            /* Remove qualquer possibilidade de scroll */
+            overscroll-behavior-y: none;
+            /* Previne o efeito "puxar para recarregar" no celular */
+            gap: 15px;
+            /* Espaço entre a área de desenho e a barra de botões */
         }
 
+        /* Envolve o Canvas e preenche todo o espaço restante da tela de cima para baixo */
+        .canvas-wrapper {
+            flex: 1;
+            /* Pega toda a altura disponível descontando os botões */
+            width: 100%;
+            min-height: 0;
+            /* Essencial para o flexbox permitir que o conteúdo encolha em telas pequenas */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* Centraliza o quadrado no meio da tela */
+        }
+
+        /* O CONTAINER agora se ajusta à largura e altura máximas do seu Wrapper */
         .canvas-container {
             position: relative;
-            width: 100%;
-            max-width: 1024px;
+            /* Força o tamanho 1024x1024, mas manda encolher sem perder a proporção quadrada (1/1) */
+            width: 1024px;
+            height: 1024px;
+            max-width: 100%;
+            max-height: 100%;
             aspect-ratio: 1 / 1;
+
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
             border-radius: 4px;
-            margin-bottom: 20px;
+            background-color: #ffffff;
         }
 
         canvas {
@@ -35,6 +65,7 @@
             border-radius: 4px;
             cursor: none;
             touch-action: none;
+            /* Impede o scroll ao arrastar o dedo em cima do desenho */
             display: block;
             width: 100%;
             height: 100%;
@@ -42,11 +73,13 @@
         }
 
         .toolbar {
+            flex-shrink: 0;
+            /* Garante que a barra de botões nunca seja esmagada */
             display: flex;
             gap: 10px;
             align-items: center;
             background: #fff;
-            padding: 10px;
+            padding: 12px;
             border-radius: 8px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             flex-wrap: wrap;
@@ -123,11 +156,15 @@
 
 <body>
 
-    <div class="canvas-container">
-        <canvas id="drawCanvas" width="1024" height="1024"></canvas>
-        <div id="statusMessage"></div>
+    <!-- Novo Wrapper flexível -->
+    <div class="canvas-wrapper">
+        <div class="canvas-container">
+            <canvas id="drawCanvas" width="1024" height="1024"></canvas>
+            <div id="statusMessage"></div>
+        </div>
     </div>
 
+    <!-- Barra de ferramentas mantida abaixo -->
     <div class="toolbar">
         <button id="btnDraw" class="active-tool">Lápis</button>
         <button id="btnErase">Borracha</button>
@@ -152,15 +189,16 @@
         let mode = 'draw';
         let brushSize = 25;
 
-        // === VARIÁVEIS DO DELAY (LAZY BRUSH) ===
-        const smoothFactor = 0.15; // 0.15 cria um ótimo peso no pincel. Quanto menor, maior o delay.
-        let targetPos = { x: 0, y: 0 }; // Onde o mouse/dedo realmente está
-        let currentPos = { x: 0, y: 0 }; // Onde a tinta do pincel está no momento
-        let lastDrawPos = { x: 0, y: 0 }; // Última posição desenhada
+        // Variáveis do Delay (Lazy Brush)
+        const smoothFactor = 0.15;
+        let targetPos = { x: 0, y: 0 };
+        let currentPos = { x: 0, y: 0 };
+        let lastDrawPos = { x: 0, y: 0 };
 
         ctx.fillStyle = "#ffffff";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+        // Atualiza a pré-visualização do tamanho do pincel dinamicamente de acordo com o redimensionamento da tela
         function updatePreviewSize() {
             const rect = canvas.getBoundingClientRect();
             const scaleX = rect.width / canvas.width;
@@ -216,36 +254,28 @@
             }
         }
 
-        // === LOOP DE ANIMAÇÃO DO PINCEL ===
-        // Isso roda continuamente a 60fps enquanto desenha, fazendo a tinta "alcançar" o mouse
         function renderLoop() {
             if (!isDrawing) return;
 
-            // Calcula a distância entre a tinta e o mouse
             const dx = targetPos.x - currentPos.x;
             const dy = targetPos.y - currentPos.y;
 
-            // Move a tinta uma porcentagem (smoothFactor) na direção do mouse
             currentPos.x += dx * smoothFactor;
             currentPos.y += dy * smoothFactor;
 
-            // Configurações do pincel
             ctx.lineWidth = brushSize;
             ctx.lineCap = 'round';
             ctx.lineJoin = 'round';
             ctx.strokeStyle = mode === 'draw' ? '#000000' : '#ffffff';
 
-            // Desenha a linha da última posição até a nova
             ctx.beginPath();
             ctx.moveTo(lastDrawPos.x, lastDrawPos.y);
             ctx.lineTo(currentPos.x, currentPos.y);
             ctx.stroke();
 
-            // Atualiza a última posição
             lastDrawPos.x = currentPos.x;
             lastDrawPos.y = currentPos.y;
 
-            // Continua o loop
             requestAnimationFrame(renderLoop);
         }
 
@@ -256,18 +286,15 @@
             const pos = getMousePos(e);
             updateCursorPreview(pos);
 
-            // Inicia todas as variáveis exatamente onde o usuário clicou
             targetPos = { x: pos.x, y: pos.y };
             currentPos = { x: pos.x, y: pos.y };
             lastDrawPos = { x: pos.x, y: pos.y };
 
-            // Faz uma bolinha inicial no local do clique
             ctx.fillStyle = mode === 'draw' ? '#000000' : '#ffffff';
             ctx.beginPath();
             ctx.arc(currentPos.x, currentPos.y, brushSize / 2, 0, Math.PI * 2);
             ctx.fill();
 
-            // Dispara o loop de animação
             requestAnimationFrame(renderLoop);
         };
 
@@ -275,10 +302,8 @@
             isDrawing = false;
         };
 
-        // Agora o evento de movimento APENAS atualiza a posição do alvo (mouse/dedo)
-        // O desenho em si é feito pelo renderLoop gerando o atraso (delay)
         const updateTarget = (e) => {
-            e.preventDefault();
+            e.preventDefault(); // Impede evento de rolagem indesejada ao mover o dedo
             const pos = getMousePos(e);
             updateCursorPreview(pos);
             if (isDrawing) {
@@ -286,7 +311,6 @@
             }
         };
 
-        // Eventos
         canvas.addEventListener('mouseenter', () => cursorPreview.style.display = 'block');
         canvas.addEventListener('mouseleave', () => {
             cursorPreview.style.display = 'none';
@@ -295,7 +319,7 @@
 
         canvas.addEventListener('mousedown', startDrawing);
         canvas.addEventListener('mouseup', stopDrawing);
-        canvas.addEventListener('mousemove', updateTarget); // Apenas atualiza o target
+        canvas.addEventListener('mousemove', updateTarget);
 
         canvas.addEventListener('touchstart', (e) => {
             cursorPreview.style.display = 'block';
@@ -305,9 +329,8 @@
             cursorPreview.style.display = 'none';
             stopDrawing();
         });
-        canvas.addEventListener('touchmove', updateTarget, { passive: false }); // Apenas atualiza o target
+        canvas.addEventListener('touchmove', updateTarget, { passive: false });
 
-        // Enviar imagem para o Google Drive
         document.getElementById('btnSave').addEventListener('click', () => {
             const dataURL = canvas.toDataURL('image/png');
             const base64Data = dataURL.split(',')[1];
